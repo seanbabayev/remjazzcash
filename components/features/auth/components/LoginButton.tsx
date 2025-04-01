@@ -20,7 +20,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
     try {
       setIsLoading(true);
       await signIn(provider, {
-        callbackUrl,
+        callbackUrl: window.location.origin + callbackUrl,
       });
     } catch (error) {
       console.error('Sign in error:', error);
