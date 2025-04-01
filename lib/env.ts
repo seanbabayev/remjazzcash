@@ -25,7 +25,9 @@ export const NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_STRIPE
 // Använd window.location.origin om tillgängligt, annars fallback till default
 export const NEXT_PUBLIC_BASE_URL = typeof window !== 'undefined' 
   ? window.location.origin 
-  : getPublicEnvVar('NEXT_PUBLIC_BASE_URL', 'http://localhost:3000');
+  : process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}` 
+    : getPublicEnvVar('NEXT_PUBLIC_BASE_URL', 'https://remeasypaisa.vercel.app');
 
 // Server-side only
 export const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
