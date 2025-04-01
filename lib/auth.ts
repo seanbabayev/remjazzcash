@@ -81,13 +81,44 @@ export const authOptions: NextAuthOptions = {
     redirect: async ({ url, baseUrl }) => {
       // Logga information för felsökning
       console.log('Redirect callback called with:', { url, baseUrl });
+      console.log('Current environment:', process.env.NODE_ENV);
+      console.log('NEXTAUTH_URL:', process.env.NEXTAUTH_URL);
       
-      // Hantera callback-fel
+      // Hantera callback-fel - detta är en kritisk del för att lösa problemet
       if (url.includes('error=Callback')) {
         console.log('Detected callback error, redirecting to dashboard');
         return `${baseUrl}/dashboard`;
       }
       
+      // Specifik hantering för produktionsmiljö
+      if (process.env.NODE_ENV === 'production') {
+        // Om URL:en är en relativ sökväg, lägg till baseUrl
+        if (url.startsWith('/')) {
+          console.log('Production: URL is relative, adding baseUrl');
+          return `${baseUrl}${url}`;
+        }
+        
+        // Om URL:en är en absolut URL, använd den om den är från samma webbplats
+        try {
+          const urlOrigin = new URL(url).origin;
+          const baseUrlOrigin = new URL(baseUrl).origin;
+          
+          console.log('Production: Comparing origins:', { urlOrigin, baseUrlOrigin });
+          
+          if (urlOrigin === baseUrlOrigin) {
+            console.log('Production: URL is from same origin, allowing redirect');
+            return url;
+          }
+        } catch (error) {
+          console.error('Error parsing URL:', error);
+        }
+        
+        // Fallback för produktion - alltid omdirigera till dashboard
+        console.log('Production: Using fallback redirect to dashboard');
+        return `${baseUrl}/dashboard`;
+      }
+      
+      // Standardhantering för utvecklingsmiljö
       // Om URL:en är en absolut URL och börjar med baseUrl, tillåt den
       if (url.startsWith(baseUrl)) {
         console.log('URL starts with baseUrl, allowing redirect');
@@ -102,9 +133,13 @@ export const authOptions: NextAuthOptions = {
       
       // Om URL:en är en extern URL, kontrollera om den är tillåten
       // I detta fall tillåter vi bara URL:er från samma webbplats
-      if (new URL(url).origin === baseUrl) {
-        console.log('URL is from same origin, allowing redirect');
-        return url;
+      try {
+        if (new URL(url).origin === new URL(baseUrl).origin) {
+          console.log('URL is from same origin, allowing redirect');
+          return url;
+        }
+      } catch (error) {
+        console.error('Error parsing URL:', error);
       }
       
       // Fallback till dashboard
@@ -140,5 +175,5 @@ export const authOptions: NextAuthOptions = {
     error: '/login',
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: process.env.NODE_ENV === 'development',
+  debug: true, // Aktivera debug-logg för alla miljöer
 };
