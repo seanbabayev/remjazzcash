@@ -1,0 +1,632 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "x-ibm-name": "title-fetch-rest-service-apigw",
+    "title": "Title Fetch REST ",
+    "version": "1.0.0"
+  },
+  "schemes": [
+    "https"
+  ],
+  "basePath": "/uat-1link/sandbox",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "clientIdHeader": {
+      "in": "header",
+      "name": "X-IBM-Client-Id",
+      "type": "apiKey"
+    },
+    "OAuth-TF": {
+      "type": "oauth2",
+      "x-ibm-oauth-provider": "newoauth",
+      "tokenUrl": "https://sandboxapi.1link.net.pk/uat-1link/sandbox/oauth2/token",
+      "scopes": {
+        "1LinkApi": "Scope for APIs"
+      },
+      "flow": "application"
+    }
+  },
+  "security": [
+    {
+      "clientIdHeader": [],
+      "OAuth-TF": [
+        "1LinkApi"
+      ]
+    }
+  ],
+  "x-ibm-configuration": {
+    "testable": true,
+    "enforced": true,
+    "cors": {
+      "enabled": true
+    },
+    "phase": "realized",
+    "type": "rest",
+    "servers": [
+      {
+        "url": "https://sandboxapi.1link.net.pk/uat-1link/sandbox",
+        "type": [
+          "production",
+          "development"
+        ]
+      }
+    ],
+    "oauth-servers": {
+      "OAuth-TF": {
+        "tokenUrls": [
+          "https://sandboxapi.1link.net.pk/uat-1link/sandbox/oauth2/token"
+        ],
+        "authorizationUrls": [],
+        "refreshUrls": []
+      }
+    }
+  },
+  "paths": {
+    "/path-1": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "schema": {
+              "$ref": "#/definitions/titleFetchRep"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "titleFetchReq",
+            "required": false,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/titleFetchRequestBody"
+            }
+          }
+        ],
+        "summary": "titleFetch"
+      }
+    }
+  },
+  "definitions": {
+    "titleFetchResponseBody": {
+      "properties": {
+        "ResponseCode": {
+          "type": "string"
+        },
+        "PAN": {
+          "type": "string"
+        },
+        "Amount": {
+          "type": "string"
+        },
+        "TransmissionDateAndTime": {
+          "type": "string"
+        },
+        "STAN": {
+          "type": "string"
+        },
+        "Time": {
+          "type": "string"
+        },
+        "Date": {
+          "type": "string"
+        },
+        "DateSettlement": {
+          "type": "string"
+        },
+        "RRN": {
+          "type": "string"
+        },
+        "AuthorizationIdentificationResponse": {
+          "type": "string"
+        },
+        "AccountNumberTo": {
+          "type": "string"
+        },
+        "Alias": {
+          "type": "string"
+        },
+        "ToBankIMD": {
+          "type": "string"
+        },
+        "AccountTitleTo": {
+          "type": "string"
+        },
+        "BranchNameTo": {
+          "type": "string"
+        },
+        "BankName": {
+          "type": "string"
+        },
+        "IBAN_MobileAccountNumber": {
+          "type": "string"
+        },
+        "Reserved1": {
+          "$ref": "#/definitions/Reserved1"
+        },
+        "Reserved2": {
+          "type": "string"
+        },
+        "Reserved3": {
+          "type": "string"
+        },
+        "ResponseDetail": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "CardAcceptorNameLoc": {
+      "properties": {
+        "Location": {
+          "type": "string",
+          "example": "Park Towers"
+        },
+        "City": {
+          "type": "string",
+          "example": "Karachi"
+        },
+        "State": {
+          "type": "string",
+          "example": "Sindh"
+        },
+        "ZipCode": {
+          "type": "string",
+          "example": "34234"
+        },
+        "AgentName": {
+          "type": "string",
+          "example": "Ali Qazi"
+        },
+        "AgentCity": {
+          "type": "string",
+          "example": "Karachi"
+        },
+        "ADCLiteral": {
+          "type": "string",
+          "example": "Any Channel"
+        },
+        "BankName": {
+          "type": "string",
+          "example": "Allied Bank"
+        },
+        "Country": {
+          "type": "string",
+          "example": "PK"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "maxProperties": 40,
+      "minProperties": 1
+    },
+    "titleFetchRequestBody": {
+      "properties": {
+        "TransactionAmount": {
+          "type": "string",
+          "example": "000000100000",
+          "description": "Transaction amount in PKR, up to 2 \ndecimal places",
+          "minLength": 1,
+          "maxLength": 12
+        },
+        "TransmissionDateAndTime": {
+          "type": "string",
+          "example": "0715133513",
+          "description": "Transmission date and time, Format: \n“MMDDhhmmss”. ",
+          "minLength": 1,
+          "maxLength": 10
+        },
+        "STAN": {
+          "type": "string",
+          "example": "102050",
+          "description": "System Trace Audit Number. \n",
+          "minLength": 1,
+          "maxLength": 6
+        },
+        "Time": {
+          "type": "string",
+          "example": "133513",
+          "description": "Local transaction time,\nFormat: “hhmmss”",
+          "maxLength": 6,
+          "minLength": 1
+        },
+        "Date": {
+          "type": "string",
+          "example": "0715",
+          "description": " Local transaction date. Format: “MMDD”",
+          "maxLength": 4,
+          "minLength": 1
+        },
+        "MerchantType": {
+          "type": "string",
+          "example": "0003",
+          "description": "Four-digit code identifying merchant.",
+          "maxLength": 4,
+          "minLength": 1
+        },
+        "FromBankIMD": {
+          "type": "string",
+          "example": "998876",
+          "description": "The bank IMD/BIN of acquiring bank.",
+          "maxLength": 11,
+          "minLength": 1
+        },
+        "RRN": {
+          "type": "string",
+          "example": "000000024420",
+          "description": "Reference number sent by the acquirer.",
+          "maxLength": 12,
+          "minLength": 1
+        },
+        "CardAcceptorTerminalId": {
+          "type": "string",
+          "example": "40260275",
+          "description": "Unique requesting terminal identifier.",
+          "maxLength": 8,
+          "minLength": 1
+        },
+        "CardAcceptorIdCode": {
+          "type": "string",
+          "example": "402626030259047",
+          "description": "Code uniquely identifying card acceptor.",
+          "maxLength": 15,
+          "minLength": 1
+        },
+        "CardAcceptorNameLocation": {
+          "$ref": "#/definitions/CardAcceptorNameLoc"
+        },
+        "MerchantDetail": {
+          "type": "string",
+          "example": "",
+          "description": "In transactions this field contains Merchant Category code",
+          "maxLength": 999
+        },
+        "PaymentDetail": {
+          "type": "string",
+          "example": "0320 Donations  Charity                     ",
+          "description": "Issuing transactions this field contains Merchant Category code \n          Payment Code (length=4) \n          Payment Details (length=40)",
+          "minLength": 1,
+          "maxLength": 44
+        },
+        "CurrencyCodeTransaction": {
+          "type": "string",
+          "example": "586",
+          "description": "Currency Code, Transaction is the local currency of the acquirer.",
+          "maxLength": 3,
+          "minLength": 1
+        },
+        "AccountNumberFrom": {
+          "type": "string",
+          "example": "3528555323354910",
+          "description": "AccountNumberFrom is a digits/characters used to identify customer account",
+          "maxLength": 28,
+          "minLength": 1
+        },
+        "AccountNumberTo": {
+          "type": "string",
+          "example": "6304532132598659",
+          "description": "This field contains Destination Account Number",
+          "minLength": 1,
+          "maxLength": 28
+        },
+        "ToBankIMD": {
+          "type": "string",
+          "example": "221166",
+          "description": "The bank IMD/BIN of issuer bank",
+          "maxLength": 11,
+          "minLength": 1
+        },
+        "PAN": {
+          "type": "string",
+          "example": "4250108749566",
+          "description": "Personal Account Number.",
+          "maxLength": 19
+        },
+        "ExpiryDate": {
+          "type": "string",
+          "example": "2205"
+        },
+        "PosEntMode": {
+          "type": "string",
+          "example": "000",
+          "description": "Point-of-Service Entry Mode",
+          "maxLength": 3,
+          "minLength": 1
+        },
+        "BeneficiaryBankName": {
+          "type": "string",
+          "example": "1Link Model Bank",
+          "description": "This field will contain the Bank Name of “To/Destination” Account",
+          "maxLength": 20
+        },
+        "Reserved1": {
+          "type": "string",
+          "example": "Reserved for future",
+          "maxLength": 999
+        },
+        "Reserved2": {
+          "type": "string",
+          "example": "Reserved for future",
+          "maxLength": 999
+        },
+        "Reserved3": {
+          "type": "string",
+          "example": "Reserved for future",
+          "maxLength": 1001
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "TransactionAmount",
+        "TransmissionDateAndTime",
+        "STAN",
+        "Time",
+        "Date",
+        "MerchantType",
+        "RRN",
+        "CardAcceptorTerminalId",
+        "CardAcceptorNameLocation",
+        "CurrencyCodeTransaction",
+        "FromBankIMD",
+        "ToBankIMD",
+        "AccountNumberTo",
+        "PosEntMode",
+        "PAN"
+      ],
+      "type": "object"
+    },
+    "titleFetchReq": {
+      "properties": {
+        "transactionAmount": {
+          "type": "string",
+          "example": "000000100000"
+        },
+        "transmissionDateAndTime": {
+          "type": "string",
+          "example": "0715133513"
+        },
+        "STAN": {
+          "type": "string",
+          "example": "102050"
+        },
+        "Time": {
+          "type": "string",
+          "example": "133513"
+        },
+        "Date": {
+          "type": "string",
+          "example": "0715"
+        },
+        "MerchantType": {
+          "type": "string",
+          "example": "0003"
+        },
+        "FromBankImd": {
+          "type": "string",
+          "example": "998876"
+        },
+        "RRN": {
+          "type": "string",
+          "example": "000000024420"
+        },
+        "CardAcceptorTerminalId": {
+          "type": "string",
+          "example": "40260275"
+        },
+        "CardAcceptorIdCode": {
+          "type": "string",
+          "example": "402626030259047"
+        },
+        "CardAcceptorNameLocation": {
+          "$ref": "#/definitions/CardAcceptorNameLocation"
+        },
+        "MerchantDetail": {
+          "type": "string",
+          "example": ""
+        },
+        "PaymentDetail": {
+          "type": "string",
+          "example": "0320 Donations  Charity"
+        },
+        "CurrencyCodeTransaction": {
+          "type": "string",
+          "example": "586"
+        },
+        "accountNumberFrom": {
+          "type": "string",
+          "example": "3528555323354910"
+        },
+        "accountNumberTo": {
+          "type": "string",
+          "example": "6304532132598659"
+        },
+        "toBankImd": {
+          "type": "string",
+          "example": "221166"
+        },
+        "PAN": {
+          "type": "string",
+          "example": "4250108749566"
+        },
+        "PosEntMode": {
+          "type": "string",
+          "example": "000"
+        },
+        "ExpiryDate": {
+          "type": "string",
+          "example": "2205"
+        },
+        "BeneficiaryBankName": {
+          "type": "string",
+          "example": "1Link Model Bank"
+        },
+        "Reserved1": {
+          "type": "string"
+        },
+        "Reserved2": {
+          "type": "string"
+        },
+        "Reserved3": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "transactionAmount",
+        "transmissionDateAndTime",
+        "STAN",
+        "Time",
+        "Date",
+        "MerchantType",
+        "FromBankImd",
+        "RRN",
+        "CardAcceptorTerminalId",
+        "CardAcceptorIdCode",
+        "CardAcceptorNameLocation",
+        "CurrencyCodeTransaction",
+        "toBankImd"
+      ]
+    },
+    "titleFetchRep": {
+      "properties": {
+        "ResponseCode": {
+          "type": "string"
+        },
+        "Pan": {
+          "type": "string"
+        },
+        "Amount": {
+          "type": "string"
+        },
+        "TransmissionDateAndTime": {
+          "type": "string"
+        },
+        "Stan": {
+          "type": "string"
+        },
+        "TimeLocalTransaction": {
+          "type": "string"
+        },
+        "DateLocalTransaction": {
+          "type": "string"
+        },
+        "DateSettlement": {
+          "type": "string"
+        },
+        "RetrievalReferenceNumber": {
+          "type": "string"
+        },
+        "AuthorizationIdentificationResponse": {
+          "type": "string"
+        },
+        "accountNumberTo": {
+          "type": "string"
+        },
+        "Alias": {
+          "type": "string"
+        },
+        "ToBankImd": {
+          "type": "string"
+        },
+        "accountTitleTo": {
+          "type": "string"
+        },
+        "branchNameTo": {
+          "type": "string"
+        },
+        "BankName": {
+          "type": "string"
+        },
+        "IBAN_MobileAccountNumber": {
+          "type": "string"
+        },
+        "Reserved1": {
+          "type": "string"
+        },
+        "Reserved2": {
+          "type": "string"
+        },
+        "Reserved3": {
+          "type": "string"
+        },
+        "ResponseDetail": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "CardAcceptorNameLocation": {
+      "properties": {
+        "AgentCity": {
+          "type": "string",
+          "example": "karachi"
+        },
+        "Location": {
+          "type": "string",
+          "example": "M.A jinnah road"
+        },
+        "city": {
+          "type": "string",
+          "example": "karachi"
+        },
+        "state": {
+          "type": "string",
+          "example": "Sindh"
+        },
+        "zipCode": {
+          "type": "string",
+          "example": "87656"
+        },
+        "AgentName": {
+          "type": "string",
+          "example": "Ali Ahmed"
+        },
+        "ADCLiteral": {
+          "type": "string",
+          "example": "ABC"
+        },
+        "BankName": {
+          "type": "string",
+          "example": "ABC"
+        },
+        "country": {
+          "type": "string",
+          "example": "PK"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Reserved1": {
+      "properties": {
+        "Sender ID": {
+          "type": "string"
+        },
+        "Beneficiary ID": {
+          "type": "string"
+        },
+        "Sender Country Code": {
+          "type": "string"
+        },
+        "Originator Details": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "x-ibm-comment": [
+    "AMU version used to port this API: v10.0.5.1-R0-8443e4b5477f4ff1dc261725a1ed3a2b0bb91cd1-2022-09-21T18:41:44Z",
+    "API03: Suffix -apigw appended to API `title` and `x-ibm-name`. For details, see: https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#API_NAME_ADDED_SUFFIX",
+    "API06: Changed gateway type to `datapower-api-gateway`.",
+    "API14: Ported v5-compatible policies to work with the API Gateway and updated policy versions.",
+    "API45: Compatibility toggle: `copy-id-headers-to-message` set to value: `false`, which is the same as the API Gateway default. For details, see: https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#COMPAT_TOGGLE_MATCHES_APIGW_DEFAULT",
+    "API45: Compatibility toggle: `return-v5-responses` set to value: `false`, which is the same as the API Gateway default. For details, see: https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#COMPAT_TOGGLE_MATCHES_APIGW_DEFAULT",
+    "API61: Set buffering property to true. For details, see: https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#SET_BUFFERING",
+    "API40: Skipping JSON Schema definition: #/definitions/titleFetchRequestBody with multiple roots or not intended for XML data."
+  ],
+  "host": "sandboxapi.1link.net.pk"
+}
