@@ -52,6 +52,7 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 dagar
   },
   callbacks: {
     session: async ({ session, token }) => {
@@ -76,6 +77,39 @@ export const authOptions: NextAuthOptions = {
       });
 
       return true;
+    },
+    redirect: async ({ url, baseUrl }) => {
+      // Logga information för felsökning
+      console.log('Redirect callback called with:', { url, baseUrl });
+      
+      // Hantera callback-fel
+      if (url.includes('error=Callback')) {
+        console.log('Detected callback error, redirecting to dashboard');
+        return `${baseUrl}/dashboard`;
+      }
+      
+      // Om URL:en är en absolut URL och börjar med baseUrl, tillåt den
+      if (url.startsWith(baseUrl)) {
+        console.log('URL starts with baseUrl, allowing redirect');
+        return url;
+      }
+      
+      // Om URL:en är relativ (börjar med /) lägg till baseUrl
+      if (url.startsWith('/')) {
+        console.log('URL is relative, adding baseUrl');
+        return `${baseUrl}${url}`;
+      }
+      
+      // Om URL:en är en extern URL, kontrollera om den är tillåten
+      // I detta fall tillåter vi bara URL:er från samma webbplats
+      if (new URL(url).origin === baseUrl) {
+        console.log('URL is from same origin, allowing redirect');
+        return url;
+      }
+      
+      // Fallback till dashboard
+      console.log('Using fallback redirect to dashboard');
+      return `${baseUrl}/dashboard`;
     },
   },
   events: {
@@ -106,4 +140,5 @@ export const authOptions: NextAuthOptions = {
     error: '/login',
   },
   secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV === 'development',
 };
