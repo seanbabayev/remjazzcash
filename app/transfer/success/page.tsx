@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { TransferHeader } from '@/components/features/transfer/components/TransferHeader';
 import { format } from 'date-fns';
+import { Suspense } from 'react';
 
 interface TransactionDetails {
   amount: string;
@@ -232,5 +233,9 @@ const TransactionContent = () => {
 };
 
 export default function SuccessPage() {
-  return <TransactionContent />;
+  return (
+    <Suspense fallback={<div className="p-4">Laddar...</div>}>
+      <TransactionContent />
+    </Suspense>
+  );
 }

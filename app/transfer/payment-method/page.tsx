@@ -1,9 +1,10 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import { TransferHeader } from '@/components/features/transfer/components/TransferHeader';
 
-const PaymentMethodPage = () => {
+const PaymentMethodContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -51,6 +52,14 @@ const PaymentMethodPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const PaymentMethodPage = () => {
+  return (
+    <Suspense fallback={<div className="p-4">Laddar...</div>}>
+      <PaymentMethodContent />
+    </Suspense>
   );
 };
 

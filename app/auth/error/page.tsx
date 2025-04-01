@@ -1,12 +1,16 @@
 import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
-export default function ErrorPage() {
+function ErrorContent() {
+  const searchParams = useSearchParams()
+  const error = searchParams.get('error')
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="rounded-lg bg-white p-8 shadow-md">
         <h1 className="mb-4 text-2xl font-bold text-red-600">Authentication Error</h1>
         <p className="text-gray-600">
-          Sorry, there was an error during the authentication process. Please try again.
+          Sorry, there was an error during the authentication process. {error && `Error: ${error}`} Please try again.
         </p>
         <a
           href="/"
@@ -16,5 +20,13 @@ export default function ErrorPage() {
         </a>
       </div>
     </div>
+  )
+}
+
+export default function ErrorPage() {
+  return (
+    <Suspense fallback={<div className="p-4">Laddar...</div>}>
+      <ErrorContent />
+    </Suspense>
   )
 }
