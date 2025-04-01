@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 import { LoginButtonProps } from '../types/auth-types';
 import { useApi } from '@/lib/hooks/useApi';
 import { API_ENDPOINTS } from '@/lib/constants';
@@ -14,16 +14,45 @@ const LoginButton: React.FC<LoginButtonProps> = ({
   ...props
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { execute } = useApi();
 
   const handleSignIn = async () => {
     try {
       setIsLoading(true);
-      await signIn(provider, {
-        callbackUrl: window.location.origin + callbackUrl,
+      setError(null);
+      
+      // Rensa eventuella kvarvarande sessionsdata
+      // Detta kan hjälpa till att undvika problem med redirect_uri_mismatch
+      try {
+        await signOut({ redirect: false });
+        console.log('Signed out before signing in to clear session');
+      } catch (e) {
+        console.log('No active session to sign out from');
+      }
+      
+      // Använd absolut URL för callback
+      const absoluteCallbackUrl = callbackUrl.startsWith('http') 
+        ? callbackUrl 
+        : `${window.location.origin}${callbackUrl}`;
+      
+      console.log('Signing in with callback URL:', absoluteCallbackUrl);
+      
+      const result = await signIn(provider, {
+        callbackUrl: absoluteCallbackUrl,
+        redirect: false, // Inaktivera automatisk redirect
       });
+      
+      if (result?.error) {
+        setError(result.error);
+        console.error('Sign in error:', result.error);
+      } else if (result?.url) {
+        // Manuell redirect efter framgångsrik inloggning
+        window.location.href = result.url;
+      }
     } catch (error) {
       console.error('Sign in error:', error);
+      setError('Ett oväntat fel uppstod vid inloggning');
     } finally {
       setIsLoading(false);
     }
@@ -43,6 +72,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
           {isLoading ? 'Signing in...' : 'Sign in with Google'}
         </span>
       </div>
+      {error && <div className={styles.error}>{error}</div>}
     </button>
   );
 };
