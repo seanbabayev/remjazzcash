@@ -79,6 +79,15 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     redirect: async ({ url, baseUrl }) => {
+      // Logga URL och baseUrl för felökning
+      console.log('Redirect URL:', url);
+      console.log('Base URL:', baseUrl);
+      
+      // Om URL:en innehåller error=Callback, redirecta direkt till dashboard
+      if (url.includes('error=Callback')) {
+        return `${baseUrl}/dashboard`;
+      }
+      
       // Hantera absoluta URL:er
       if (url.startsWith(baseUrl)) return url;
       // Hantera relativa URL:er
