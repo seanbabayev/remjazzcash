@@ -1,7 +1,8 @@
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import prisma from "./prisma";
+import prisma, { prismaManager } from "./prisma";
+import { Adapter, AdapterUser } from "next-auth/adapters";
 
 // Default contacts som ska läggas till för varje ny användare
 const DEFAULT_CONTACTS = [
@@ -31,8 +32,71 @@ const DEFAULT_CONTACTS = [
   }
 ];
 
+// Interface för account data
+interface AccountData {
+  provider: string;
+  providerAccountId: string;
+}
+
+// Anpassad Prisma-adapter som använder vår förbättrade Prisma-klient
+const customPrismaAdapter: Adapter = {
+  ...PrismaAdapter(prisma),
+  // Override getUserByAccount för att hantera prepared statement-fel
+  getUserByAccount: async (data: AccountData): Promise<AdapterUser | null> => {
+    try {
+      // Säkerställ att databasanslutningen är aktiv
+      await prismaManager.connect();
+      
+      // Använd raw query istället för findUnique för att undvika prepared statement-fel
+      const accounts = await prisma.$queryRaw<any[]>`
+        SELECT * FROM "Account" 
+        WHERE "provider" = ${data.provider} 
+        AND "providerAccountId" = ${data.providerAccountId}
+        LIMIT 1
+      `;
+      
+      if (!accounts || accounts.length === 0) {
+        return null;
+      }
+      
+      const user = await prisma.user.findUnique({
+        where: { id: accounts[0].userId },
+      });
+      
+      return user as AdapterUser;
+    } catch (error) {
+      console.error('Error in getUserByAccount:', error);
+      // Försök med standardmetoden som fallback
+      try {
+        const account = await prisma.account.findUnique({
+          where: {
+            provider_providerAccountId: {
+              provider: data.provider,
+              providerAccountId: data.providerAccountId,
+            },
+          },
+        });
+        
+        if (!account) return null;
+        
+        const user = await prisma.user.findUnique({
+          where: { id: account.userId },
+        });
+        
+        return user as AdapterUser;
+      } catch (fallbackError) {
+        console.error('Fallback error in getUserByAccount:', fallbackError);
+        return null;
+      }
+    }
+  },
+};
+
+// Kontrollera om vi körs i Vercel eller annan produktionsmiljö
+const isProduction = process.env.VERCEL || process.env.NODE_ENV === 'production';
+
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: customPrismaAdapter,
   providers: [
     // Demo-provider är nu inaktiverad eftersom vi använder Google-inloggning
     // {
@@ -101,7 +165,7 @@ export const authOptions: NextAuthOptions = {
       }
       
       // Specifik hantering för produktionsmiljö
-      if (process.env.NODE_ENV === 'production') {
+      if (isProduction) {
         // Om URL:en är en relativ sökväg, lägg till baseUrl
         if (url.startsWith('/')) {
           console.log('Production: URL is relative, adding baseUrl');
