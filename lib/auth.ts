@@ -84,9 +84,10 @@ export const authOptions: NextAuthOptions = {
       console.log('Current environment:', process.env.NODE_ENV);
       console.log('NEXTAUTH_URL:', process.env.NEXTAUTH_URL);
       
-      // Hantera callback-fel - detta är en kritisk del för att lösa problemet
+      // Förbättrad hantering av callback-fel
       if (url.includes('error=Callback')) {
         console.log('Detected callback error, redirecting to dashboard');
+        // Omdirigera direkt till dashboard
         return `${baseUrl}/dashboard`;
       }
       

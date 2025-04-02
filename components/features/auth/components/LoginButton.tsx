@@ -36,18 +36,31 @@ const LoginButton: React.FC<LoginButtonProps> = ({
         ? callbackUrl 
         : `${window.location.origin}${callbackUrl}`;
       
+      // Logga mer information för felsökning
+      console.log('Device info:', {
+        userAgent: window.navigator.userAgent,
+        platform: window.navigator.platform,
+        vendor: window.navigator.vendor
+      });
+      console.log('Window location:', {
+        origin: window.location.origin,
+        href: window.location.href,
+        host: window.location.host
+      });
       console.log('Signing in with callback URL:', absoluteCallbackUrl);
       
       const result = await signIn(provider, {
         callbackUrl: absoluteCallbackUrl,
-        redirect: false, // Inaktivera automatisk redirect
+        redirect: true, // Aktivera automatisk redirect för att låta NextAuth hantera redirects
       });
       
+      // Denna kod körs bara om redirect: false används ovan
       if (result?.error) {
         setError(result.error);
         console.error('Sign in error:', result.error);
       } else if (result?.url) {
         // Manuell redirect efter framgångsrik inloggning
+        console.log('Manual redirect to:', result.url);
         window.location.href = result.url;
       }
     } catch (error) {
