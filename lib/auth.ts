@@ -1,7 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import prisma, { prismaManager } from "./prisma";
+import prisma from "./prisma";
 import { Adapter, AdapterUser } from "next-auth/adapters";
 
 // Default contacts som ska läggas till för varje ny användare
@@ -44,9 +44,6 @@ const customPrismaAdapter: Adapter = {
   // Override getUserByAccount för att hantera prepared statement-fel
   getUserByAccount: async (data: AccountData): Promise<AdapterUser | null> => {
     try {
-      // Säkerställ att databasanslutningen är aktiv
-      await prismaManager.connect();
-      
       // Använd raw query istället för findUnique för att undvika prepared statement-fel
       const accounts = await prisma.$queryRaw<any[]>`
         SELECT * FROM "Account" 

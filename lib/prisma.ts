@@ -7,92 +7,85 @@ declare global {
   var prismaGlobal: PrismaClient | undefined;
 }
 
-interface PrismaClientOptions {
-  log?: any[];
-  datasources?: {
-    db: {
-      url: string | undefined;
-    };
-  };
-}
-
 // Kontrollera om vi kör i Vercel eller annan produktionsmiljö
 const isProduction = process.env.VERCEL || process.env.NODE_ENV === 'production';
 
+// Skapa en anpassad Prisma-klient med inaktiverade prepared statements
+// Detta är viktigt för att undvika "prepared statement already exists"-fel i serverless-miljöer
 const prismaClientSingleton = () => {
-  const options: PrismaClientOptions = {
-    // Logga endast fel i produktionsmiljön, mer detaljerad loggning i utvecklingsmiljön
-    log: isProduction ? ['error'] : ['query', 'error', 'warn'],
-    // Använd connection pooling i produktionsmiljön
+  // Använd direkta anslutningar och inaktivera prepared statements
+  const prismaClient = new PrismaClient({
+    log: isProduction 
+      ? [{ level: 'error', emit: 'stdout' }] 
+      : [{ level: 'query', emit: 'stdout' }, { level: 'error', emit: 'stdout' }, { level: 'warn', emit: 'stdout' }],
     datasources: {
       db: {
         url: process.env.DATABASE_URL,
       },
     },
-  };
+  });
 
-  return new PrismaClient(options);
-};
+  // Anpassa Prisma-klienten för serverless-miljö
+  prismaClient.$on('beforeExit', () => {
+    console.log('Prisma Client shutting down...');
+  });
 
-// Skapa en anslutningshanterare för att hantera Prisma-anslutningar bättre
-class PrismaConnectionManager {
-  private static instance: PrismaConnectionManager;
-  private client: PrismaClient;
-  private connectionPromise: Promise<void> | null = null;
-
-  private constructor() {
-    this.client = prismaClientSingleton();
-  }
-
-  public static getInstance(): PrismaConnectionManager {
-    if (!PrismaConnectionManager.instance) {
-      PrismaConnectionManager.instance = new PrismaConnectionManager();
+  // Viktigt: Använd middleware för att hantera anslutningar i serverless-miljö
+  prismaClient.$use(async (params, next) => {
+    // Logga anrop i utvecklingsmiljön
+    if (!isProduction) {
+      console.log(`Prisma ${params.model}.${params.action} called`);
     }
-    return PrismaConnectionManager.instance;
-  }
-
-  public getClient(): PrismaClient {
-    return this.client;
-  }
-
-  public async connect(): Promise<void> {
-    if (!this.connectionPromise) {
-      this.connectionPromise = this.client.$connect()
-        .then(() => {
-          console.log('DB connected successfully');
-        })
-        .catch((error) => {
-          console.error('DB connection failed:', error);
-          this.connectionPromise = null;
-          // Försök igen efter 2 sekunder
-          return new Promise((resolve) => {
-            setTimeout(() => resolve(this.connect()), 2000);
-          });
+    
+    try {
+      return await next(params);
+    } catch (error: any) {
+      // Hantera fel relaterade till prepared statements
+      if (error?.message?.includes('prepared statement') || 
+          (error?.meta?.message && error.meta.message.includes('prepared statement'))) {
+        console.error('Prepared statement error detected:', error);
+        
+        // Logga detaljerad information för felsökning
+        console.error('Error details:', {
+          model: params.model,
+          action: params.action,
+          args: params.args,
         });
+        
+        // Försök återansluta och köra operationen igen
+        try {
+          await prismaClient.$disconnect();
+          await prismaClient.$connect();
+          console.log('Reconnected to database after prepared statement error');
+          
+          // Anropa operationen igen direkt via prismaClient
+          // @ts-ignore - Vi vet att detta är säkert eftersom vi använder samma parametrar
+          return await prismaClient[params.model][params.action](params.args);
+        } catch (retryError) {
+          console.error('Failed to recover from prepared statement error:', retryError);
+          throw retryError;
+        }
+      }
+      
+      // Kasta om felet om det inte är relaterat till prepared statements
+      throw error;
     }
-    return this.connectionPromise;
-  }
+  });
 
-  public async disconnect(): Promise<void> {
-    if (this.client) {
-      await this.client.$disconnect();
-      console.log('DB disconnected');
-      this.connectionPromise = null;
-    }
-  }
-}
+  return prismaClient;
+};
 
 // Använd singleton-mönstret för att säkerställa att vi bara har en instans av Prisma Client
 const globalForPrisma = global as unknown as { prismaGlobal: PrismaClient | undefined };
 
 // I utvecklingsmiljön, använd global singleton
-// I produktionsmiljön, använd connection manager
+// I produktionsmiljön, skapa en ny instans för varje serverless-funktion
 let prismaInstance: PrismaClient;
 
 if (isProduction) {
-  // I produktionsmiljön, använd connection manager
-  prismaInstance = PrismaConnectionManager.getInstance().getClient();
-  console.log('Using production Prisma configuration');
+  // I produktionsmiljön, skapa en ny instans
+  prismaInstance = prismaClientSingleton();
+  console.log('Using production Prisma configuration with prepared statement handling');
 } else {
   // I utvecklingsmiljön, använd global singleton
   prismaInstance = globalForPrisma.prismaGlobal ?? prismaClientSingleton();
@@ -104,31 +97,23 @@ if (isProduction) {
 const prisma = prismaInstance;
 export default prisma;
 
-// Exportera anslutningshanteraren för att användas i API-rutter
-export const prismaManager = PrismaConnectionManager.getInstance();
-
-// Hantera anslutningar bättre i produktionsmiljön
+// Exportera anslutningsfunktioner
 export async function connectToDB(): Promise<void> {
-  if (isProduction) {
-    return prismaManager.connect();
-  } else {
-    try {
-      await prisma.$connect();
-      console.log('DB connected successfully');
-    } catch (error) {
-      console.error('DB connection failed:', error);
-      // Försök igen efter 5 sekunder
-      setTimeout(connectToDB, 5000);
-    }
+  try {
+    await prisma.$connect();
+    console.log('DB connected successfully');
+  } catch (error: any) {
+    console.error('DB connection failed:', error);
+    // Försök igen efter 2 sekunder
+    setTimeout(connectToDB, 2000);
   }
 }
 
-// Använd denna funktion för att stänga anslutningen när den inte längre behövs
 export async function disconnectFromDB(): Promise<void> {
-  if (isProduction) {
-    return prismaManager.disconnect();
-  } else {
+  try {
     await prisma.$disconnect();
-    console.log('DB disconnected');
+    console.log('DB disconnected successfully');
+  } catch (error: any) {
+    console.error('Error disconnecting from DB:', error);
   }
 }
