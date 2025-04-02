@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { STRIPE_SECRET_KEY, NEXT_PUBLIC_BASE_URL } from '@/lib/env';
+import { STRIPE_SECRET_KEY, STRIPE_REDIRECT_URL } from '@/lib/env';
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
@@ -61,8 +61,8 @@ export async function POST(request: Request) {
         message: message || '',
         amount: amount.toString(),
       },
-      success_url: `${NEXT_PUBLIC_BASE_URL}/transfer/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${NEXT_PUBLIC_BASE_URL}/transfer/summary?amount=${amount}&recipient=${recipientId}`,
+      success_url: `${STRIPE_REDIRECT_URL}/transfer/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${STRIPE_REDIRECT_URL}/transfer/summary?amount=${amount}&recipient=${recipientId}`,
     });
 
     return NextResponse.json({ sessionId: checkoutSession.id });
