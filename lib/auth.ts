@@ -8,18 +8,27 @@ const DEFAULT_CONTACTS = [
   {
     name: 'Alaya',
     phone: '+46701234567',
-    email: 'alaya@example.com'
+    email: 'alaya@example.com',
+    isDefault: true
   },
   {
     name: 'Badeeda',
     phone: '+46701234568',
-    email: 'badeeda@example.com'
+    email: 'badeeda@example.com',
+    isDefault: true
   },
   {
     name: 'Abdullah',
     phone: '+46701234569',
-    email: 'abdullah@example.com'
+    email: 'abdullah@example.com',
+    isDefault: true
   },
+  {
+    name: 'Hassan Ali',
+    phone: '+92123456789',
+    email: 'hassan@example.com',
+    isDefault: true
+  }
 ];
 
 export const authOptions: NextAuthOptions = {
@@ -85,9 +94,9 @@ export const authOptions: NextAuthOptions = {
       console.log('NEXTAUTH_URL:', process.env.NEXTAUTH_URL);
       
       // Förbättrad hantering av callback-fel
-      if (url.includes('error=Callback')) {
-        console.log('Detected callback error, redirecting to dashboard');
-        // Omdirigera direkt till dashboard
+      if (url.includes('error=')) {
+        console.log('Detected error in URL, redirecting to dashboard:', url);
+        // Omdirigera direkt till dashboard vid alla typer av fel
         return `${baseUrl}/dashboard`;
       }
       
@@ -160,7 +169,7 @@ export const authOptions: NextAuthOptions = {
                 email: contact.email,
                 phone: contact.phone,
                 phoneNumber: contact.phone,
-                isDefault: true,
+                isDefault: contact.isDefault,
                 user: { connect: { email: user.email } },
               },
             });
@@ -176,5 +185,5 @@ export const authOptions: NextAuthOptions = {
     error: '/login',
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: true, // Aktivera debug-logg för alla miljöer
+  debug: process.env.NODE_ENV !== 'production', // Aktivera debug-logg endast i utvecklingsmiljö
 };
