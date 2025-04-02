@@ -26,8 +26,11 @@ const prismaClientSingleton = () => {
   });
 
   // Anpassa Prisma-klienten för serverless-miljö
-  prismaClient.$on('beforeExit', () => {
-    console.log('Prisma Client shutting down...');
+  // Använd process.on('beforeExit') istället för prismaClient.$on('beforeExit')
+  // eftersom $on('beforeExit') inte fungerar med Prisma 5.0.0+ med library-motorn
+  process.on('beforeExit', () => {
+    console.log('Process exiting, disconnecting Prisma Client...');
+    prismaClient.$disconnect();
   });
 
   // Viktigt: Använd middleware för att hantera anslutningar i serverless-miljö
