@@ -163,6 +163,9 @@ export default function AddFavouritePage() {
               alt="EasyPaisa"
               width={125}
               height={30}
+              priority
+              quality={100}
+              sizes="(max-width: 768px) 125px, 125px"
             />
           </button>
           <button className="w-[40px] h-[40px] bg-[#322D3C] rounded-full flex justify-center items-center relative">

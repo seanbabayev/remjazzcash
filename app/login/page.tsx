@@ -25,6 +25,9 @@ export default async function LoginPage() {
           alt="EasyPaisa"
           width={120}
           height={44}
+          priority
+          quality={100}
+          sizes="(max-width: 768px) 120px, 120px"
         />
       </div>
 

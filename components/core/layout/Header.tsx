@@ -28,6 +28,9 @@ export const Header: React.FC<HeaderProps> = ({
           alt="Easypaisa"
           width={125}
           height={30}
+          priority
+          quality={100}
+          sizes="(max-width: 768px) 125px, 125px"
           className="cursor-pointer"
         />
       </Link>
