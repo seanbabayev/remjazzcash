@@ -425,7 +425,7 @@ const SummaryContent = () => {
               className="h-[56px] rounded-full w-full max-w-[400px] transition-colors box-border font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] text-[18px] font-medium bg-[#00BD5F] text-white"
               data-component-name="SummaryContent"
             >
-              Confirm the transaction
+              Proceed to payment
             </button>
           </div>
         </div>
