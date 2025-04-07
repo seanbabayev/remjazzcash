@@ -5,8 +5,11 @@ import { DEFAULT_CONTACTS } from "@/lib/defaultContacts";
 
 export async function GET() {
   try {
-    // Returnera alla standardkontakter från defaultContacts.ts
-    return NextResponse.json(DEFAULT_CONTACTS.map(contact => ({
+    // Filtrera bort kontakter där isDefault är false (Hassan Ali)
+    const visibleContacts = DEFAULT_CONTACTS.filter(contact => contact.isDefault);
+    
+    // Returnera bara synliga standardkontakter
+    return NextResponse.json(visibleContacts.map(contact => ({
       ...contact,
       createdAt: contact.createdAt.toISOString(),
       updatedAt: contact.updatedAt.toISOString()
