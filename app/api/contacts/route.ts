@@ -1,22 +1,16 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-
-// Statisk kontaktlista som alltid returneras
-const defaultContacts = [
-  {
-    id: "hassan-ali-id",
-    name: "Hassan Ali",
-    image: null,
-    phoneNumber: "+92123456789",
-    isDefault: true
-  }
-];
+import { DEFAULT_CONTACTS } from "@/lib/defaultContacts";
 
 export async function GET() {
   try {
-    // Returnera alltid den statiska kontaktlistan
-    return NextResponse.json(defaultContacts);
+    // Returnera alla standardkontakter från defaultContacts.ts
+    return NextResponse.json(DEFAULT_CONTACTS.map(contact => ({
+      ...contact,
+      createdAt: contact.createdAt.toISOString(),
+      updatedAt: contact.updatedAt.toISOString()
+    })));
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to fetch contacts', details: error instanceof Error ? error.message : 'Unknown error' },
