@@ -154,7 +154,7 @@ export default function AddFavouritePage() {
               alt="Tillbaka"
               width={16}
               height={16}
-              className="brightness-100"
+              className="[filter:brightness(0)_saturate(100%)_invert(12%)_sepia(32%)_saturate(3190%)_hue-rotate(345deg)_brightness(93%)_contrast(98%)]"
             />
           </button>
           <button onClick={() => router.push('/dashboard')} className="cursor-pointer">
