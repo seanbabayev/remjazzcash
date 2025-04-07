@@ -93,6 +93,11 @@ const isProduction = process.env.VERCEL || process.env.NODE_ENV === 'production'
 
 export const authOptions: NextAuthOptions = {
   adapter: customPrismaAdapter,
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 dagar
+  },
   providers: [
     // Demo-provider är aktiverad för JazzCash-demo
     {
@@ -119,10 +124,6 @@ export const authOptions: NextAuthOptions = {
     //   },
     // }),
   ],
-  session: {
-    strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 dagar
-  },
   callbacks: {
     session: async ({ session, token }) => {
       if (session?.user) {
@@ -244,6 +245,5 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login', 
     error: '/login',
   },
-  secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV !== 'production', // Aktivera debug-logg endast i utvecklingsmiljö
 };

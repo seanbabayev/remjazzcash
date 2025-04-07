@@ -13,12 +13,13 @@ const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2024-11-20.acacia" }
 export async function POST(request: Request) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      return NextResponse.json(
-        { error: "Authentication required" },
-        { status: 401 }
-      );
-    }
+    
+    // För demo-läget, skapa en mock-session om ingen session finns
+    const user = session?.user || {
+      id: '1',
+      name: 'Demo User',
+      email: 'demo@example.com'
+    };
 
     const body = await request.json();
     const { amount, recipientId, message } = body;
@@ -56,7 +57,7 @@ export async function POST(request: Request) {
       ],
       mode: "payment",
       metadata: {
-        userId: session.user.id,
+        userId: user.id,
         recipientId,
         message: message || '',
         amount: amount.toString(),
