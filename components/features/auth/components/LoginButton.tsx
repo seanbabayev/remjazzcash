@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { signIn, signOut } from 'next-auth/react';
 import { LoginButtonProps } from '../types/auth-types';
 import { useApi } from '@/lib/hooks/useApi';
@@ -16,22 +16,6 @@ const LoginButton: React.FC<LoginButtonProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { execute } = useApi();
-  
-  // Rensa eventuella felmeddelanden när komponenten monteras
-  useEffect(() => {
-    // Kontrollera om det finns felparametrar i URL:en
-    const urlParams = new URLSearchParams(window.location.search);
-    const errorParam = urlParams.get('error');
-    
-    if (errorParam) {
-      console.log('Error parameter detected in URL:', errorParam);
-      setError(`Inloggningsfel: ${errorParam}`);
-      
-      // Ta bort felparametern från URL:en för att undvika problem vid upprepad inloggning
-      const newUrl = window.location.pathname;
-      window.history.replaceState({}, document.title, newUrl);
-    }
-  }, []);
 
   const handleSignIn = async () => {
     try {
@@ -39,6 +23,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
       setError(null);
       
       // Rensa eventuella kvarvarande sessionsdata
+      // Detta kan hjälpa till att undvika problem med redirect_uri_mismatch
       try {
         await signOut({ redirect: false });
         console.log('Signed out before signing in to clear session');
@@ -64,30 +49,23 @@ const LoginButton: React.FC<LoginButtonProps> = ({
       });
       console.log('Signing in with callback URL:', absoluteCallbackUrl);
       
-      // Försök inloggning med timeout för att hantera hängande anrop
-      const loginPromise = signIn(provider, {
+      const result = await signIn(provider, {
         callbackUrl: absoluteCallbackUrl,
         redirect: true, // Aktivera automatisk redirect för att låta NextAuth hantera redirects
       });
       
-      // Sätt en timeout för att hantera hängande anrop
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Inloggningen tog för lång tid')), 15000);
-      });
-      
-      // Använd Promise.race för att hantera timeout
-      await Promise.race([loginPromise, timeoutPromise]);
-      
       // Denna kod körs bara om redirect: false används ovan
-      // eller om Promise.race returnerar loginPromise före timeout
+      if (result?.error) {
+        setError(result.error);
+        console.error('Sign in error:', result.error);
+      } else if (result?.url) {
+        // Manuell redirect efter framgångsrik inloggning
+        console.log('Manual redirect to:', result.url);
+        window.location.href = result.url;
+      }
     } catch (error) {
       console.error('Sign in error:', error);
-      setError('Ett oväntat fel uppstod vid inloggning. Försök igen.');
-      
-      // Försök att omdirigera till dashboard vid fel
-      setTimeout(() => {
-        window.location.href = `${window.location.origin}/dashboard`;
-      }, 3000);
+      setError('Ett oväntat fel uppstod vid inloggning');
     } finally {
       setIsLoading(false);
     }

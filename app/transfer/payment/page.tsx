@@ -48,7 +48,7 @@ const PaymentContent = () => {
       <div 
         className="absolute left-0 top-0 w-full h-[210px]" 
         style={{
-          background: 'linear-gradient(180deg, #6ED7A3 30%, #FCF7F1 100%)'
+          background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
         }}
       >
         {/* Center accent */}
@@ -60,7 +60,7 @@ const PaymentContent = () => {
             top: '-130px',
             width: '252px',
             height: '252px',
-            background: 'rgba(251, 237, 173, 1)',
+            background: 'rgba(247, 195, 17, 0.7)',
             borderRadius: '100%',
             filter: 'blur(30px)',
           }}
@@ -111,7 +111,7 @@ const PaymentOptionsPage = () => {
         <div 
           className="absolute left-0 top-0 w-full h-[210px]" 
           style={{
-            background: 'linear-gradient(180deg, #6ED7A3 30%, #FCF7F1 100%)'
+            background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
           }}
         >
           {/* Center accent */}
@@ -123,7 +123,7 @@ const PaymentOptionsPage = () => {
               top: '-130px',
               width: '252px',
               height: '252px',
-              background: 'rgba(251, 237, 173, 1)',
+              background: 'rgba(247, 195, 17, 0.7)',
               borderRadius: '100%',
               filter: 'blur(30px)',
             }}

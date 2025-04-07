@@ -21,8 +21,8 @@ export default async function LoginPage() {
       {/* Logo */}
       <div className={styles.logo}>
         <Image
-          src="/img/easypaisa_white.svg"
-          alt="EasyPaisa"
+          src="/img/jazzcash.png"
+          alt="JazzCash"
           width={120}
           height={44}
           priority

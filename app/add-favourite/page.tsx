@@ -124,7 +124,7 @@ export default function AddFavouritePage() {
       <div 
         className="absolute left-0 top-0 w-full h-[210px]" 
         style={{
-          background: 'linear-gradient(180deg, #6ED7A3 30%, #FCF7F1 100%)'
+          background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
         }}
       >
         {/* Center accent */}
@@ -136,7 +136,7 @@ export default function AddFavouritePage() {
             top: '-130px',
             width: '252px',
             height: '252px',
-            background: 'rgba(251, 237, 173, 1)',
+            background: 'rgba(247, 195, 17, 0.7)',
             borderRadius: '100%',
             filter: 'blur(30px)',
           }}
@@ -146,7 +146,7 @@ export default function AddFavouritePage() {
       <div className="max-w-full p-6 relative z-[1]">
         <header className="flex justify-between items-center h-[72px] -mt-[10px]">
           <button 
-            className="w-[40px] h-[40px] bg-[#322D3C] rounded-full flex justify-center items-center"
+            className="w-[40px] h-[40px] bg-[#FCFDFD] rounded-full flex justify-center items-center"
             onClick={() => router.push('/dashboard')}
           >
             <Image
@@ -154,13 +154,13 @@ export default function AddFavouritePage() {
               alt="Tillbaka"
               width={16}
               height={16}
-              className="brightness-0 invert"
+              className="brightness-100"
             />
           </button>
           <button onClick={() => router.push('/dashboard')} className="cursor-pointer">
             <Image
-              src="/img/easypaisa.svg"
-              alt="EasyPaisa"
+              src="/img/jazzcash.png"
+              alt="JazzCash"
               width={125}
               height={30}
               priority
@@ -168,13 +168,13 @@ export default function AddFavouritePage() {
               sizes="(max-width: 768px) 125px, 125px"
             />
           </button>
-          <button className="w-[40px] h-[40px] bg-[#322D3C] rounded-full flex justify-center items-center relative">
+          <button className="w-[40px] h-[40px] bg-[#FCFDFD] rounded-full flex justify-center items-center relative">
             <Image
               src="/img/bell-icon.svg"
               alt="Notifications"
               width={16}
               height={16}
-              className="brightness-0 invert"
+              className="brightness-100"
             />
             <div className="absolute top-0 right-0 w-3 h-3 bg-[#00BD5F] rounded-full border border-white"></div>
           </button>
@@ -267,7 +267,7 @@ export default function AddFavouritePage() {
             disabled={!isValid}
             className={`w-full h-[56px] rounded-2xl transition-all font-semibold mt-4 ${
               isValid 
-                ? 'bg-[#00BD5F] text-white cursor-pointer hover:bg-[#00a77a]'
+                ? 'bg-[#7C1E1C] text-white cursor-pointer hover:bg-[#6A1A18]'
                 : isPhoneError
                   ? 'bg-[#FF6B6B] text-white cursor-not-allowed'
                   : 'bg-[#E4E4E4] text-[rgba(27,27,27,0.5)] cursor-not-allowed'

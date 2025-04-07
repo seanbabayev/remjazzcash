@@ -116,10 +116,6 @@ function TransferPageContent() {
     setIsEuroInput(!isEuroInput);
   };
 
-  const formatCurrency = (value: string, currency: string) => {
-    return `${currency} ${value}`;
-  };
-
   const formatPhoneNumber = (phoneNumber: string) => {
     return phoneNumber;
   };
@@ -203,7 +199,7 @@ function TransferPageContent() {
       <div 
         className="absolute left-0 top-0 w-full h-[210px]" 
         style={{
-          background: 'linear-gradient(180deg, #6ED7A3 30%, #FCF7F1 100%)'
+          background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
         }}
       >
         {/* Center accent */}
@@ -215,7 +211,7 @@ function TransferPageContent() {
             top: '-130px',
             width: '252px',
             height: '252px',
-            background: 'rgba(251, 237, 173, 1)',
+            background: 'rgba(247, 195, 17, 0.7)',
             borderRadius: '100%',
             filter: 'blur(30px)',
           }}

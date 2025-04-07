@@ -11,21 +11,22 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className={`flex justify-between items-center h-[72px] -mt-[10px] ${className || ''}`} {...props}>
       {showMenu && (
-        <button className="w-[40px] h-[40px] bg-[#322D3C] rounded-full flex justify-center items-center">
+        <button className="w-[40px] h-[40px] bg-[#FCFDFD] rounded-full flex justify-center items-center">
           <Image
             src="/img/menu-icon.svg"
             alt="Menu"
             width={16}
             height={16}
-            className="brightness-0 invert"
+            className="brightness-100 invert-0"
+            style={{ filter: 'invert(0)', opacity: 1 }}
           />
         </button>
       )}
 
       <Link href="/">
         <Image
-          src="/img/easypaisa.svg"
-          alt="Easypaisa"
+          src="/img/jazzcash.png"
+          alt="JazzCash"
           width={125}
           height={30}
           priority
@@ -36,15 +37,16 @@ export const Header: React.FC<HeaderProps> = ({
       </Link>
 
       {showNotifications && (
-        <button className="w-[40px] h-[40px] bg-[#322D3C] rounded-full flex justify-center items-center relative">
+        <button className="w-[40px] h-[40px] bg-[#FCFDFD] rounded-full flex justify-center items-center relative">
           <Image
             src="/img/bell-icon.svg"
             alt="Notifications"
             width={18}
             height={18}
-            className="brightness-0 invert"
+            className="brightness-100 invert-0"
+            style={{ filter: 'invert(0)', opacity: 1 }}
           />
-          <span className="absolute top-0 right-0 w-[10px] h-[10px] bg-[#00BD5F] rounded-full border-2 border-[#FCF7F1]" />
+          <span className="absolute top-[-2px] right-[-2px] w-[12px] h-[12px] bg-[#81201F] rounded-full border-[2.5px] border-[#FCFDFD]" />
         </button>
       )}
     </header>

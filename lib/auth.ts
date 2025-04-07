@@ -1,5 +1,4 @@
 import { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "./prisma";
 import { Adapter, AdapterUser } from "next-auth/adapters";
@@ -95,30 +94,30 @@ const isProduction = process.env.VERCEL || process.env.NODE_ENV === 'production'
 export const authOptions: NextAuthOptions = {
   adapter: customPrismaAdapter,
   providers: [
-    // Demo-provider är nu inaktiverad eftersom vi använder Google-inloggning
-    // {
-    //   id: "demo-provider",
-    //   name: "Demo Provider",
-    //   type: "credentials",
-    //   credentials: {},
-    //   authorize: async () => {
-    //     return {
-    //       id: "demo-user",
-    //       name: "Demo User",
-    //       email: "demo@example.com",
-    //     };
-    //   },
-    // } as any,
-    // Google-inloggning är nu aktiverad
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID!,
-      clientSecret: process.env.GOOGLE_SECRET!,
-      authorization: {
-        params: {
-          prompt: "select_account",
-        },
+    // Demo-provider är aktiverad för JazzCash-demo
+    {
+      id: "demo-provider",
+      name: "Demo Provider",
+      type: "credentials",
+      credentials: {},
+      authorize: async () => {
+        return {
+          id: "demo-user",
+          name: "Demo User",
+          email: "demo@example.com",
+        };
       },
-    }),
+    } as any,
+    // Google-inloggning är inaktiverad för demo
+    // GoogleProvider({
+    //   clientId: process.env.GOOGLE_ID!,
+    //   clientSecret: process.env.GOOGLE_SECRET!,
+    //   authorization: {
+    //     params: {
+    //       prompt: "select_account",
+    //     },
+    //   },
+    // }),
   ],
   session: {
     strategy: "jwt",

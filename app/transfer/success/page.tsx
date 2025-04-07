@@ -29,7 +29,6 @@ const TransactionContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [transactionDetails, setTransactionDetails] = useState<TransactionDetails | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [copySuccess, setCopySuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -82,20 +81,6 @@ const TransactionContent = () => {
     }, 1000);
   }, [searchParams]);
 
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        <p className="text-red-500 mb-4">{error}</p>
-        <button 
-          onClick={() => router.push('/dashboard')}
-          className="px-4 py-2 bg-black text-white rounded-full"
-        >
-          Return to Dashboard
-        </button>
-      </div>
-    );
-  }
-
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -121,7 +106,7 @@ const TransactionContent = () => {
       <div 
         className="absolute left-0 top-0 w-full h-[210px]" 
         style={{
-          background: 'linear-gradient(180deg, #6ED7A3 30%, #FCF7F1 100%)'
+          background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
         }}
       >
         {/* Center accent */}
@@ -133,7 +118,7 @@ const TransactionContent = () => {
             top: '-130px',
             width: '252px',
             height: '252px',
-            background: 'rgba(251, 237, 173, 1)',
+            background: 'rgba(247, 195, 17, 0.7)',
             borderRadius: '100%',
             filter: 'blur(30px)',
           }}
@@ -217,13 +202,14 @@ const TransactionContent = () => {
           </div>
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0 p-6">
-          <div className="max-w-md mx-auto">
+        <div className="fixed bottom-0 left-0 right-0 p-6 w-full bg-[#FCF7F1]">
+          <div className="max-w-md mx-auto w-full">
             <button
               onClick={() => router.push('/dashboard')}
-              className="h-[60px] rounded-[16px] w-full bg-[#049D52] text-white font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] transition-colors"
+              className="h-[56px] rounded-full w-full transition-colors box-border font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] text-[18px] font-medium bg-[#00BD5F] text-white"
+              data-component-name="SuccessContent"
             >
-              Done
+              Go to home
             </button>
           </div>
         </div>

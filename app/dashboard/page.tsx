@@ -3,8 +3,44 @@
 import Image from 'next/image';
 import PhoneInput from '@/components/dashboard/PhoneInput'; 
 import QuickRemit from '@/components/home/QuickRemit';
-import { Header } from '@/components/core/layout/Header';
 import SignOutButton from '@/components/auth/SignOutButton';
+
+// Enkel Header-komponent
+const Header = () => {
+  return (
+    <header className="flex justify-between items-center py-4 px-2">
+      <div className="w-10 h-10 flex items-center justify-center bg-white rounded-full">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 6H20" stroke="#7C1E1C" strokeWidth="2" strokeLinecap="round" />
+          <path d="M4 12H20" stroke="#7C1E1C" strokeWidth="2" strokeLinecap="round" />
+          <path d="M4 18H20" stroke="#7C1E1C" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+      </div>
+      
+      <div className="flex items-center justify-center">
+        <Image 
+          src="/img/jazzcash.png" 
+          alt="JazzCash logo" 
+          width={120} 
+          height={40} 
+          className="h-8 w-auto"
+          priority
+        />
+      </div>
+      
+      <div className="w-10 h-10 flex items-center justify-center bg-white rounded-full relative">
+        <Image
+          src="/img/bell-icon.svg"
+          alt="Notifications"
+          width={16}
+          height={16}
+          className="brightness-100"
+        />
+        <div className="absolute top-0 right-0 w-3 h-3 bg-[#00BD5F] rounded-full border border-white"></div>
+      </div>
+    </header>
+  );
+};
 
 export default function DashboardPage() {
   return (
@@ -13,8 +49,9 @@ export default function DashboardPage() {
       <div 
         className="absolute left-0 top-0 w-full h-[210px]" 
         style={{
-          background: 'linear-gradient(180deg, #6ED7A3 30%, #FCF7F1 100%)'
+          background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
         }}
+        data-component-name="DashboardPage"
       >
         {/* Center accent */}
         <div 
@@ -25,7 +62,7 @@ export default function DashboardPage() {
             top: '-130px',
             width: '252px',
             height: '252px',
-            background: 'rgba(251, 237, 173, 1)',
+            background: 'rgba(247, 195, 17, 0.7)',
             borderRadius: '100%',
             filter: 'blur(30px)',
           }}

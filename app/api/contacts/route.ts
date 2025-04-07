@@ -47,8 +47,8 @@ export async function GET(request: NextRequest) {
             isDefault: false  // Endast användarens egna kontakter
           },
           { 
-            isDefault: true
-            // Tar bort villkoret som kräver bild
+            isDefault: true,
+            image: { not: null }  // Endast standardkontakter med bilder
           }
         ]
       },

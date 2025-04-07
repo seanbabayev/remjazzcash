@@ -56,7 +56,13 @@ const SummaryContent = () => {
               id: recipientId,
               name: 'Alaya',
               phoneNumber: '+46701234567',
-              image: '/img/contact1.jpg'
+              image: '/img/contact1.jpg',
+              userId: 'demo-user',
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              email: null,
+              phone: null,
+              isDefault: false
             };
           }
         } catch (recipientError) {
@@ -65,7 +71,13 @@ const SummaryContent = () => {
             id: recipientId,
             name: 'Alaya',
             phoneNumber: '+46701234567',
-            image: '/img/contact1.jpg'
+            image: '/img/contact1.jpg',
+            userId: 'demo-user',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            email: null,
+            phone: null,
+            isDefault: false
           };
         }
 
@@ -111,19 +123,37 @@ const SummaryContent = () => {
               id: '1',
               name: 'Alaya',
               phoneNumber: '+46701234567',
-              image: '/img/contact1.jpg'
+              image: '/img/contact1.jpg',
+              userId: 'demo-user',
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              email: null,
+              phone: null,
+              isDefault: false
             },
             {
               id: '2',
               name: 'Badeeda',
               phoneNumber: '+46701234568',
-              image: '/img/contact2.jpg'
+              image: '/img/contact2.jpg',
+              userId: 'demo-user',
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              email: null,
+              phone: null,
+              isDefault: false
             },
             {
               id: '3',
               name: 'Abdullah',
               phoneNumber: '+46701234569',
-              image: '/img/contact3.jpg'
+              image: '/img/contact3.jpg',
+              userId: 'demo-user',
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              email: null,
+              phone: null,
+              isDefault: false
             }
           ]);
         }
@@ -134,19 +164,37 @@ const SummaryContent = () => {
             id: '1',
             name: 'Alaya',
             phoneNumber: '+46701234567',
-            image: '/img/contact1.jpg'
+            image: '/img/contact1.jpg',
+            userId: 'demo-user',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            email: null,
+            phone: null,
+            isDefault: false
           },
           {
             id: '2',
             name: 'Badeeda',
             phoneNumber: '+46701234568',
-            image: '/img/contact2.jpg'
+            image: '/img/contact2.jpg',
+            userId: 'demo-user',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            email: null,
+            phone: null,
+            isDefault: false
           },
           {
             id: '3',
             name: 'Abdullah',
             phoneNumber: '+46701234569',
-            image: '/img/contact3.jpg'
+            image: '/img/contact3.jpg',
+            userId: 'demo-user',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            email: null,
+            phone: null,
+            isDefault: false
           }
         ]);
       }
@@ -252,7 +300,7 @@ const SummaryContent = () => {
       <div 
         className="absolute left-0 top-0 w-full h-[210px]" 
         style={{
-          background: 'linear-gradient(180deg, #6ED7A3 30%, #FCF7F1 100%)'
+          background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
         }}
       >
         {/* Center accent */}
@@ -264,7 +312,7 @@ const SummaryContent = () => {
             top: '-130px',
             width: '252px',
             height: '252px',
-            background: 'rgba(251, 237, 173, 1)',
+            background: 'rgba(247, 195, 17, 0.7)',
             borderRadius: '100%',
             filter: 'blur(30px)',
           }}
@@ -392,7 +440,7 @@ const SummaryContent = () => {
                         setShowAmountEdit(false);
                         setAmountError(null);
                       }}
-                      className="w-full bg-[#00B767] text-white py-4 rounded-full font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-semibold"
+                      className="w-full bg-[#7C1E1C] text-white py-4 rounded-full font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-semibold"
                     >
                       Save amount
                     </button>
@@ -442,7 +490,7 @@ const SummaryPage = () => {
         <div 
           className="absolute left-0 top-0 w-full h-[210px]" 
           style={{
-            background: 'linear-gradient(180deg, #6ED7A3 30%, #FCF7F1 100%)'
+            background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
           }}
         >
           {/* Center accent */}
@@ -454,7 +502,7 @@ const SummaryPage = () => {
               top: '-130px',
               width: '252px',
               height: '252px',
-              background: 'rgba(251, 237, 173, 1)',
+              background: 'rgba(247, 195, 17, 0.7)',
               borderRadius: '100%',
               filter: 'blur(30px)',
             }}
