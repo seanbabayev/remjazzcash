@@ -229,7 +229,7 @@ const SummaryContent = () => {
     try {
       let responseData;
       try {
-        const response = await fetch('/api/stripe', {
+        const response = await fetch(`${window.location.origin}/api/stripe`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
