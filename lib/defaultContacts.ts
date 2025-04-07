@@ -38,5 +38,17 @@ export const DEFAULT_CONTACTS: DefaultContact[] = [
     userId: null,
     createdAt: new Date(),
     updatedAt: new Date()
+  },
+  {
+    id: 'default-4',
+    name: 'Hassan Ali',
+    phoneNumber: '+92123456789',
+    phone: '+92123456789',
+    email: 'hassan@example.com',
+    image: null,
+    isDefault: true,
+    userId: null,
+    createdAt: new Date(),
+    updatedAt: new Date()
   }
 ];
