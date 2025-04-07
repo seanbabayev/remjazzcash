@@ -23,17 +23,16 @@ export function getPublicEnvVar(key: string, defaultValue?: string): string {
 export const NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 
 // Använd window.location.origin om tillgängligt, annars fallback till default
-// I produktionsmiljön använd alltid den publika URL:en, men respektera NEXTAUTH_URL för autentisering
 export const NEXT_PUBLIC_BASE_URL = typeof window !== 'undefined' 
   ? window.location.origin 
   : process.env.NODE_ENV === 'production'
-    ? process.env.NEXTAUTH_URL || 'https://remjazzcash.vercel.app'
+    ? 'https://remjazzcash.vercel.app'
     : process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
 // Server-side only
 export const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 
-// Specifik URL för Stripe-återdirigeringar
+// Specifik URL för Stripe-återdirigeringar - använd samma logik som NEXT_PUBLIC_BASE_URL
 export const STRIPE_REDIRECT_URL = typeof window !== 'undefined'
   ? window.location.origin
   : process.env.NODE_ENV === 'production'
