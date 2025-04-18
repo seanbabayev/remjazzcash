@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { Header } from '@/components/core/layout/Header';
 
 export default function AddFavouritePage() {
   const [fullName, setFullName] = useState('');
@@ -119,163 +120,104 @@ export default function AddFavouritePage() {
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-[#FCF7F1] overflow-hidden">
-      {/* Background gradient */}
-      <div 
-        className="absolute left-0 top-0 w-full h-[210px]" 
-        style={{
-          background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
-        }}
-      >
-        {/* Center accent */}
-        <div 
-          style={{
-            position: 'absolute',
-            left: '50%',
-            marginLeft: '-126px',
-            top: '-130px',
-            width: '252px',
-            height: '252px',
-            background: 'rgba(247, 195, 17, 0.7)',
-            borderRadius: '100%',
-            filter: 'blur(30px)',
-          }}
-        />
-      </div>
-      
-      <div className="max-w-full p-6 relative z-[1]">
-        <header className="flex justify-between items-center h-[72px] -mt-[10px]">
-          <button 
-            className="w-[40px] h-[40px] bg-[#FCFDFD] rounded-full flex justify-center items-center"
-            onClick={() => router.push('/dashboard')}
-          >
-            <Image
-              src="/img/back-arrow.svg"
-              alt="Tillbaka"
-              width={16}
-              height={16}
-              className="[filter:brightness(0)_saturate(100%)_invert(12%)_sepia(32%)_saturate(3190%)_hue-rotate(345deg)_brightness(93%)_contrast(98%)]"
-            />
-          </button>
-          <button onClick={() => router.push('/dashboard')} className="cursor-pointer">
-            <Image
-              src="/img/jazzcash.png"
-              alt="JazzCash"
-              width={125}
-              height={30}
-              priority
-              quality={100}
-              sizes="(max-width: 768px) 125px, 125px"
-            />
-          </button>
-          <button className="w-[40px] h-[40px] bg-[#FCFDFD] rounded-full flex justify-center items-center relative">
-            <Image
-              src="/img/bell-icon.svg"
-              alt="Notifications"
-              width={16}
-              height={16}
-              className="brightness-100"
-            />
-            <div className="absolute top-0 right-0 w-3 h-3 bg-[#00BD5F] rounded-full border border-white"></div>
-          </button>
-        </header>
-
-        <main className="mt-8">
-          <h1 className="text-[24px] text-[#171717] mb-0">Add favourite</h1>
-          
-          {/* Input Fields */}
-          <div className="bg-white rounded-2xl p-4 mb-4 mt-4">
-            {errorMessage && (
-              <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg">
-                {errorMessage}
-              </div>
-            )}
-            <div className="mb-4">
-              <label className="text-sm text-gray-500">Enter your favourites full name</label>
-              <input
-                type="text"
-                value={fullName}
-                onChange={handleNameChange}
-                placeholder="Name and Surname"
-                className="h-[48px] border rounded-[99px] px-4 mt-2 w-full box-border font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif]"
-                style={{
-                  borderColor: '#E7ECF0'
-                }}
-              />
+    <div className="relative w-full min-h-screen bg-[#FEFEFE] overflow-hidden rounded-[24px] p-6">
+      {/* Header från dashboard */}
+      <Header showMenu={false} showNotifications={true} />
+      <main className="mt-8">
+        <h1 className="text-[24px] text-[#171717] mb-0">Add favourite</h1>
+        
+        {/* Input Fields */}
+        <div className="bg-white rounded-2xl p-4 mb-4 mt-4 border border-[#D9D9D9]">
+          {errorMessage && (
+            <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg">
+              {errorMessage}
             </div>
-            <div>
-              <label className="text-sm text-gray-500">Enter phone number</label>
-              <input
-                type="tel"
-                value={phoneNumber}
-                onChange={handlePhoneNumberChange}
-                className="h-[48px] border rounded-[99px] px-4 mt-2 w-full box-border font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif]"
-                style={{
-                  borderColor: '#E7ECF0'
-                }}
-              />
-            </div>
+          )}
+          <div className="mb-4">
+            <label className="text-sm text-gray-500">Enter your favourites full name</label>
+            <input
+              type="text"
+              value={fullName}
+              onChange={handleNameChange}
+              placeholder="Name and Surname"
+              className="h-[48px] border rounded-[99px] px-4 mt-2 w-full box-border font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif]"
+              style={{
+                borderColor: '#E7ECF0'
+              }}
+            />
           </div>
-
-          {/* Photo Upload */}
-          <div className="bg-white rounded-2xl p-4">
-            {!previewUrl ? (
-              <label className="flex items-center gap-3 cursor-pointer">
-                <div className="w-6 h-6">
-                  <Image
-                    src="/img/favourite.svg"
-                    alt="Add favourite"
-                    width={24}
-                    height={24}
-                  />
-                </div>
-                <span>Add a photo</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-              </label>
-            ) : (
-              <div className="flex items-center gap-3">
-                <div className="relative w-12 h-12">
-                  <Image
-                    src={previewUrl}
-                    alt="Preview"
-                    fill
-                    className="rounded-full object-cover"
-                  />
-                </div>
-                <span className="text-gray-500 flex-1 truncate">
-                  {selectedFile ? truncateFileName(selectedFile.name) : ''}
-                </span>
-                <button
-                  onClick={handleRemovePhoto}
-                  className="w-16 h-8 bg-[#FF6B6B] text-white rounded-[99px] text-xs hover:bg-[#FF6B6B] transition-colors"
-                >
-                  Remove
-                </button>
-              </div>
-            )}
+          <div>
+            <label className="text-sm text-gray-500">Enter phone number</label>
+            <input
+              type="tel"
+              value={phoneNumber}
+              onChange={handlePhoneNumberChange}
+              className="h-[48px] border rounded-[99px] px-4 mt-2 w-full box-border font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif]"
+              style={{
+                borderColor: '#E7ECF0'
+              }}
+            />
           </div>
-        </main>
-
-        <div className="fixed bottom-8 left-6 right-6">
-          <button
-            onClick={handleSubmit}
-            disabled={!isValid}
-            className={`w-full h-[56px] rounded-2xl transition-all font-semibold mt-4 ${
-              isValid 
-                ? 'bg-[#7C1E1C] text-white cursor-pointer hover:bg-[#6A1A18]'
-                : isPhoneError
-                  ? 'bg-[#FF6B6B] text-white cursor-not-allowed'
-                  : 'bg-[#E4E4E4] text-[rgba(27,27,27,0.5)] cursor-not-allowed'
-            }`}
-          >
-            {isPhoneError ? 'Phone number must start with +92 and have at least 8 digits' : 'Save favourite'}
-          </button>
         </div>
+
+        {/* Photo Upload */}
+        <div className="bg-white rounded-2xl p-4 border border-[#D9D9D9]">
+          {!previewUrl ? (
+            <label className="flex items-center gap-3 cursor-pointer">
+              <div className="w-6 h-6">
+                <Image
+                  src="/img/favourite.svg"
+                  alt="Add favourite"
+                  width={24}
+                  height={24}
+                />
+              </div>
+              <span>Add a photo</span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+            </label>
+          ) : (
+            <div className="flex items-center gap-3">
+              <div className="relative w-12 h-12">
+                <Image
+                  src={previewUrl}
+                  alt="Preview"
+                  fill
+                  className="rounded-full object-cover"
+                />
+              </div>
+              <span className="text-gray-500 flex-1 truncate">
+                {selectedFile ? truncateFileName(selectedFile.name) : ''}
+              </span>
+              <button
+                onClick={handleRemovePhoto}
+                className="w-16 h-8 bg-[#FF6B6B] text-white rounded-[99px] text-xs hover:bg-[#FF6B6B] transition-colors"
+              >
+                Remove
+              </button>
+            </div>
+          )}
+        </div>
+      </main>
+
+      <div className="fixed bottom-8 left-6 right-6">
+        <button
+          onClick={handleSubmit}
+          disabled={!isValid}
+          className={`w-full h-[56px] rounded-2xl transition-all font-semibold mt-4 ${
+            isValid 
+              ? 'bg-[#7C1E1C] text-white cursor-pointer hover:bg-[#6A1A18]'
+              : isPhoneError
+                ? 'bg-[#FF6B6B] text-white cursor-not-allowed'
+                : 'bg-[#E4E4E4] text-[rgba(27,27,27,0.5)] cursor-not-allowed'
+          }`}
+        >
+          {isPhoneError ? 'Phone number must start with +92 and have at least 8 digits' : 'Save favourite'}
+        </button>
       </div>
     </div>
   );

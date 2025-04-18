@@ -67,9 +67,8 @@ export default function PhoneInput() {
       };
     } else if (isValid === true) {
       return {
-        backgroundColor: '#00BD5F',
+        backgroundColor: '#7BCDC9',
         cursor: 'pointer',
-        color: '#FFFFFF',
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
       };
     } else {
@@ -160,6 +159,7 @@ export default function PhoneInput() {
             ...getButtonStyles(),
             opacity: isLoading ? 1 : undefined,
             cursor: isLoading ? 'wait' : (isValid ? 'pointer' : 'not-allowed'),
+            ...(isValid === true && !isLoading ? { color: '#322D3C' } : {}),
           }}
         >
           <span>

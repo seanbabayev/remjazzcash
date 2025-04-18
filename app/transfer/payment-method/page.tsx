@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { TransferHeader } from '@/components/features/transfer/components/TransferHeader';
+import '@/styles/loader.css';
 
 const PaymentMethodContent = () => {
   const router = useRouter();
@@ -57,7 +58,7 @@ const PaymentMethodContent = () => {
 
 const PaymentMethodPage = () => {
   return (
-    <Suspense fallback={<div className="p-4">Laddar...</div>}>
+    <Suspense fallback={<div className="flex flex-col justify-center items-center min-h-screen bg-[#FEFEFE]"><div className="loader" /></div>}>
       <PaymentMethodContent />
     </Suspense>
   );

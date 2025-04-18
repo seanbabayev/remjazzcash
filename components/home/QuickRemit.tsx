@@ -38,13 +38,13 @@ function StaticQuickRemit() {
   return (
     <div className="flex flex-wrap justify-between mt-4">
       {DEMO_CONTACTS.map((contact) => (
-        <div key={contact.id} className="flex flex-col items-center justify-center w-[72px] mb-4">
+        <div key={contact.id} className="flex flex-col items-center justify-center w-[72px]">
           <div className="w-16 h-16 relative mb-2 border-2 border-white rounded-full bg-gray-200"></div>
           <p className="text-sm text-center whitespace-nowrap">{contact.name}</p>
         </div>
       ))}
-      <div className="flex flex-col items-center justify-center w-[72px] mb-4">
-        <div className="w-16 h-16 relative mb-2 bg-[#FDE3C4] rounded-full flex items-center justify-center border-2 border-white">
+      <div className="flex flex-col items-center justify-center w-[72px]">
+        <div className="w-16 h-16 relative mb-2 bg-[#C4E9F3] rounded-full flex items-center justify-center border-2 border-white">
           <span className="text-2xl">+</span>
         </div>
         <p className="text-sm text-center whitespace-nowrap">Add new</p>
@@ -102,13 +102,13 @@ function ClientQuickRemit() {
     return (
       <div className="flex flex-wrap justify-between mt-4">
         {DEMO_CONTACTS.map((contact) => (
-          <div key={contact.id} className="flex flex-col items-center justify-center w-[72px] mb-4 opacity-50">
+          <div key={contact.id} className="flex flex-col items-center justify-center w-[72px] opacity-50">
             <div className="w-16 h-16 relative mb-2 border-2 border-white rounded-full bg-gray-200 animate-pulse"></div>
             <p className="text-sm text-center whitespace-nowrap">{contact.name}</p>
           </div>
         ))}
-        <div className="flex flex-col items-center justify-center w-[72px] mb-4 opacity-50">
-          <div className="w-16 h-16 relative mb-2 bg-[#FDE3C4] rounded-full flex items-center justify-center border-2 border-white">
+        <div className="flex flex-col items-center justify-center w-[72px] opacity-50">
+          <div className="w-16 h-16 relative mb-2 bg-[#C4E9F3] rounded-full flex items-center justify-center border-2 border-white">
             <span className="text-2xl">+</span>
           </div>
           <p className="text-sm text-center whitespace-nowrap">Add new</p>
@@ -132,7 +132,7 @@ function ClientQuickRemit() {
       {contacts.map((contact) => (
         <div
           key={contact.id}
-          className="flex flex-col items-center justify-center cursor-pointer w-[72px] mb-4"
+          className="flex flex-col items-center justify-center cursor-pointer w-[72px]"
           onClick={() => handleContactClick(contact.phoneNumber)}
         >
           <div className="w-16 h-16 relative mb-2 border-2 border-white rounded-full overflow-hidden">
@@ -154,9 +154,9 @@ function ClientQuickRemit() {
       ))}
       <div 
         onClick={() => router.push('/add-favourite')}
-        className="flex flex-col items-center justify-center cursor-pointer w-[72px] mb-4"
+        className="flex flex-col items-center justify-center cursor-pointer w-[72px]"
       >
-        <div className="w-16 h-16 relative mb-2 bg-[#FDE3C4] rounded-full flex items-center justify-center border-2 border-white">
+        <div className="w-16 h-16 relative mb-2 bg-[#C4E9F3] rounded-full flex items-center justify-center border-2 border-white">
           <span className="text-2xl">+</span>
         </div>
         <p className="text-sm text-center whitespace-nowrap">Add new</p>

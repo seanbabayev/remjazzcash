@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { useState, useEffect, Suspense } from 'react';
 import { Contact } from '@prisma/client';
-import { TransferHeader } from '@/components/features/transfer/components/TransferHeader';
+import { PaymentHeader } from '@/components/payment/PaymentHeader';
 import { loadStripe } from '@stripe/stripe-js';
 import { NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY } from '@/lib/env';
 
@@ -280,7 +280,11 @@ const SummaryContent = () => {
   };
 
   if (isLoading) {
-    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-[#FEFEFE]">
+        <div className="loader" />
+      </div>
+    );
   }
 
   if (error) {
@@ -295,33 +299,12 @@ const SummaryContent = () => {
   }
 
   return (
-    <div className="relative min-h-screen bg-[#FCF7F1] overflow-hidden">
-      {/* Background gradient */}
-      <div 
-        className="absolute left-0 top-0 w-full h-[210px]" 
-        style={{
-          background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
-        }}
-      >
-        {/* Center accent */}
-        <div 
-          style={{
-            position: 'absolute',
-            left: '50%',
-            marginLeft: '-126px',
-            top: '-130px',
-            width: '252px',
-            height: '252px',
-            background: 'rgba(247, 195, 17, 0.7)',
-            borderRadius: '100%',
-            filter: 'blur(30px)',
-          }}
-        />
-      </div>
-      
+    <div className="relative min-h-screen bg-[#FEFEFE] overflow-hidden">
+      {/* Radial background effekt inspirerad av Remittance-main */}
+      <div className="absolute w-[252px] h-[252px] top-[138px] left-[223px] bg-[radial-gradient(circle,rgba(124,204,201,0.8)_0%,rgba(124,204,201,0)_70%)] z-0 blur-[50px]" />
       <div className="p-6 relative z-[1] flex flex-col items-center">
         <div className="w-full max-w-[400px]">
-          <TransferHeader title="Summary" />
+          <PaymentHeader title="Summary" />
 
           <div className="mt-6 space-y-6">
             <div className="bg-white rounded-[24px] p-6 pb-[32px] border border-[#E4E4E4] w-full" data-component-name="SummaryContent">
@@ -470,7 +453,7 @@ const SummaryContent = () => {
           <div className="flex justify-center">
             <button
               onClick={handleConfirm}
-              className="h-[56px] rounded-full w-full max-w-[400px] transition-colors box-border font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] text-[18px] font-medium bg-[#00BD5F] text-white"
+              className="h-[56px] rounded-full w-full max-w-[400px] transition-colors box-border font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] text-[18px] font-medium bg-[#7BCDC9] text-[#322D3C]"
               data-component-name="SummaryContent"
             >
               Proceed to payment
@@ -482,38 +465,19 @@ const SummaryContent = () => {
   );
 };
 
+import '@/styles/loader.css';
+
 const SummaryPage = () => {
   return (
     <Suspense fallback={
-      <div className="relative min-h-screen bg-[#FCF7F1] overflow-hidden">
-        {/* Background gradient */}
-        <div 
-          className="absolute left-0 top-0 w-full h-[210px]" 
-          style={{
-            background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
-          }}
-        >
-          {/* Center accent */}
-          <div 
-            style={{
-              position: 'absolute',
-              left: '50%',
-              marginLeft: '-126px',
-              top: '-130px',
-              width: '252px',
-              height: '252px',
-              background: 'rgba(247, 195, 17, 0.7)',
-              borderRadius: '100%',
-              filter: 'blur(30px)',
-            }}
-          />
-        </div>
-        
+      <div className="relative min-h-screen bg-[#FEFEFE] overflow-hidden">
+        {/* Radial background effekt inspirerad av Remittance-main */}
+        <div className="absolute w-[252px] h-[252px] top-[138px] left-[223px] bg-[radial-gradient(circle,rgba(124,204,201,0.8)_0%,rgba(124,204,201,0)_70%)] z-0 blur-[50px]" />
         <div className="p-6 relative z-[1]">
           <div className="max-w-md mx-auto">
-            <TransferHeader title="Summary" />
+            <PaymentHeader title="Summary" />
             <div className="mt-6 flex justify-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+              <div className="loader" />
             </div>
           </div>
         </div>

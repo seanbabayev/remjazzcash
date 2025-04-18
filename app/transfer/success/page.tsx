@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { TransferHeader } from '@/components/features/transfer/components/TransferHeader';
 import { format } from 'date-fns';
 import { Suspense } from 'react';
+import '@/styles/loader.css';
 
 interface TransactionDetails {
   amount: string;
@@ -83,8 +84,8 @@ const TransactionContent = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+      <div className="flex justify-center items-center min-h-screen bg-[#FEFEFE]">
+        <div className="loader" />
       </div>
     );
   }
@@ -101,35 +102,13 @@ const TransactionContent = () => {
   const completionDate = format(new Date(today.setDate(today.getDate() + 1)), 'MMMM do');
 
   return (
-    <div className="relative min-h-screen bg-[#FCF7F1] overflow-hidden">
-      {/* Background gradient */}
-      <div 
-        className="absolute left-0 top-0 w-full h-[210px]" 
-        style={{
-          background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
-        }}
-      >
-        {/* Center accent */}
-        <div 
-          style={{
-            position: 'absolute',
-            left: '50%',
-            marginLeft: '-126px',
-            top: '-130px',
-            width: '252px',
-            height: '252px',
-            background: 'rgba(247, 195, 17, 0.7)',
-            borderRadius: '100%',
-            filter: 'blur(30px)',
-          }}
-        />
-      </div>
+    <div className="relative min-h-screen bg-[#FEFEFE] overflow-hidden">
       
       <div className="relative z-[1] p-6">
         <div className="max-w-md mx-auto">
           <TransferHeader title="Thank you!" />
           
-          <div className="mt-8 bg-white rounded-[24px] p-6 shadow-sm border border-[#EAEAEA]">
+          <div className="bg-white rounded-[24px] p-6 shadow-sm border border-[#EAEAEA]">
             <h3 className="text-sm font-medium text-gray-500 mb-6">TRANSFER UPDATES</h3>
             
             {/* Timeline */}
@@ -178,7 +157,7 @@ const TransactionContent = () => {
             </div>
             
             {/* Transaction ID */}
-            <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between">
+            <div className="pt-6 border-t border-gray-100 flex items-center justify-between">
               <p className="text-sm text-gray-500">
                 TRANS ID: #{transactionDetails.transactionId.slice(0, 10)}
               </p>
@@ -202,11 +181,11 @@ const TransactionContent = () => {
           </div>
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0 p-6 w-full bg-[#FCF7F1]">
+        <div className="fixed bottom-0 left-0 right-0 p-6 w-full bg-[#FEFEFE]">
           <div className="max-w-md mx-auto w-full">
             <button
               onClick={() => router.push('/dashboard')}
-              className="h-[56px] rounded-full w-full transition-colors box-border font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] text-[18px] font-medium bg-[#00BD5F] text-white"
+              className="h-[56px] rounded-full w-full transition-colors box-border font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] text-[18px] font-medium bg-[#7BCDC9] text-[#322D3C]"
               data-component-name="SuccessContent"
             >
               Go to home
@@ -220,7 +199,7 @@ const TransactionContent = () => {
 
 export default function SuccessPage() {
   return (
-    <Suspense fallback={<div className="p-4">Laddar...</div>}>
+    <Suspense fallback={<div className="flex flex-col justify-center items-center min-h-screen bg-[#FEFEFE]"><div className="loader" /></div>}>
       <TransactionContent />
     </Suspense>
   );

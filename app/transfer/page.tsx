@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Contact } from '@prisma/client';
 import { ArrowUpDown } from 'lucide-react';
 import { TransferHeader } from '@/components/features/transfer/components/TransferHeader';
+import '@/styles/loader.css';
 
 interface ExchangeRate {
   rate: number;
@@ -153,19 +154,19 @@ function TransferPageContent() {
       return {
         backgroundColor: '#E4E4E4',
         cursor: 'not-allowed',
-        color: 'rgba(27, 27, 27, 0.5)',
+        color: 'rgba(27,27,27,0.5)',
       };
     } else if (!isAmountValid()) {
       return {
-        backgroundColor: '#ff6b6b', 
+        backgroundColor: '#ff6b6b',
         cursor: 'not-allowed',
         color: '#FFFFFF',
       };
     } else {
       return {
-        backgroundColor: '#00BD5F', 
+        backgroundColor: '#7BCDC9',
         cursor: 'pointer',
-        color: '#FFFFFF',
+        color: '#322D3C',
       };
     }
   };
@@ -181,7 +182,11 @@ function TransferPageContent() {
   };
 
   if (isLoading) {
-    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+    return (
+      <div className="flex flex-col justify-center items-center min-h-screen bg-[#FEFEFE]">
+        <div className="loader mb-4" />
+      </div>
+    );
   }
 
   if (error) {
@@ -194,115 +199,91 @@ function TransferPageContent() {
   }
 
   return (
-    <div className="relative w-full min-h-screen bg-[#FCF7F1] overflow-hidden">
-      {/* Background gradient */}
-      <div 
-        className="absolute left-0 top-0 w-full h-[210px]" 
-        style={{
-          background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
-        }}
-      >
-        {/* Center accent */}
-        <div 
-          style={{
-            position: 'absolute',
-            left: '50%',
-            marginLeft: '-126px',
-            top: '-130px',
-            width: '252px',
-            height: '252px',
-            background: 'rgba(247, 195, 17, 0.7)',
-            borderRadius: '100%',
-            filter: 'blur(30px)',
-          }}
-        />
-      </div>
-      
-      <div className="max-w-md mx-auto p-6 relative z-[1]">
-        <TransferHeader title="Money transfer" />
-
-        <div className="mt-6">
-          {/* Amount Input */}
-          <div>
-            <h2 className="font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-semibold text-[18px]">
-              {isEuroInput ? 'The amount you will send excl fees' : 'The amount to be received'}
-            </h2>
-            
-            <div className="mt-2 relative">
-              <div className="font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-semibold text-[40px] flex items-center">
-                <span>{isEuroInput ? '€' : '₨'}</span>
-                <input
-                  type="text"
-                  value={amount}
-                  onChange={(e) => handleAmountChange(e.target.value)}
-                  className="ml-2 w-full bg-transparent focus:outline-none font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-semibold text-[40px]"
-                  placeholder="0"
-                />
-                <button
-                  onClick={toggleCurrency}
-                  className="absolute right-0 top-1/2 transform -translate-y-1/2"
-                >
-                  <ArrowUpDown size={24} className="text-gray-600" />
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-2 font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-bold text-[14px] text-gray-600">
-              {isEuroInput 
-                ? `The amount to be received: ₨ ${calculateOtherAmount()}`
-                : `The amount you will send: € ${calculateOtherAmount()}`
-              }
+    <div className="relative w-full min-h-screen bg-[#FEFEFE] overflow-hidden pt-6 px-6">
+      {/* Radial background effekt inspirerad av Remittance-main */}
+      <div className="absolute w-[252px] h-[252px] top-[138px] left-[223px] bg-[radial-gradient(circle,rgba(124,204,201,0.8)_0%,rgba(124,204,201,0)_70%)] z-0 blur-[50px]" />
+      <TransferHeader title="Money transfer" />
+      <div className="max-w-md mx-auto pt-0 px-0 relative z-[1]">
+        {/* Amount Input */}
+        <div>
+          <h2 className="font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-semibold text-[18px]">
+            {isEuroInput ? 'The amount you will send excl fees' : 'The amount to be received'}
+          </h2>
+          
+          <div className="mt-2 relative">
+            <div className="font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-semibold text-[40px] flex items-center">
+              <span>{isEuroInput ? '€' : '₨'}</span>
+              <input
+                type="text"
+                value={amount}
+                onChange={(e) => handleAmountChange(e.target.value)}
+                className="ml-2 w-full bg-transparent focus:outline-none font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-semibold text-[40px]"
+                placeholder="0"
+              />
+              <button
+                onClick={toggleCurrency}
+                className="absolute right-0 top-1/2 transform -translate-y-1/2"
+              >
+                <ArrowUpDown size={24} className="text-gray-600" />
+              </button>
             </div>
           </div>
 
-          {/* Transfer To Section */}
-          <div className="mt-8 p-4 rounded-[24px] bg-white border border-[#EAEAEA]">
-            <h2 className="font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-semibold text-[18px]">Transfer to</h2>
-            
-            <div className="mt-4 flex items-start">
-              <div className="w-11 h-11 rounded-full overflow-hidden flex-shrink-0">
-                <Image
-                  src={recipient?.image || '/img/default-avatar.png'}
-                  alt={recipient?.name || 'Recipient'}
-                  width={44}
-                  height={44}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              
-              <div className="ml-3">
-                <div className="font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-semibold text-[14px]">
-                  {recipient?.name}
-                </div>
-                <div className="mt-2 font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] text-[12px] text-gray-600">
-                  {formatPhoneNumber(recipient?.phoneNumber || '')}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <input
-                type="text"
-                placeholder="Add message"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="w-full px-4 py-3 bg-[#EAEAEA] text-[#333333] font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-semibold text-[16px] rounded-[100px] focus:outline-none"
-              />
-            </div>
+          <div className="mt-2 font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-bold text-[14px] text-gray-600">
+            {isEuroInput 
+              ? `The amount to be received: ₨ ${calculateOtherAmount()}`
+              : `The amount you will send: € ${calculateOtherAmount()}`
+            }
           </div>
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0 p-6">
-          <div className="max-w-md mx-auto">
-            <button
-              onClick={handleContinue}
-              style={getButtonStyles()}
-              className="h-[56px] rounded-full w-full max-w-[400px] mx-auto block transition-colors box-border font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] text-[18px] font-medium"
-              data-component-name="TransferPage"
-            >
-              {getButtonText()}
-            </button>
+        {/* Transfer To Section */}
+        <div className="mt-8 p-4 rounded-[24px] bg-white border border-[#EAEAEA]">
+          <h2 className="font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-semibold text-[18px]">Transfer to</h2>
+          
+          <div className="mt-4 flex items-start">
+            <div className="w-11 h-11 rounded-full overflow-hidden flex-shrink-0">
+              <Image
+                src={recipient?.image || '/img/default-avatar.png'}
+                alt={recipient?.name || 'Recipient'}
+                width={44}
+                height={44}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            
+            <div className="ml-3">
+              <div className="font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-semibold text-[14px]">
+                {recipient?.name}
+              </div>
+              <div className="mt-2 font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] text-[12px] text-gray-600">
+                {formatPhoneNumber(recipient?.phoneNumber || '')}
+              </div>
+            </div>
           </div>
+
+          <div className="mt-6">
+            <input
+              type="text"
+              placeholder="Add message"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="w-full px-4 py-3 bg-[#EAEAEA] text-[#333333] font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] font-semibold text-[16px] rounded-[100px] focus:outline-none"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="fixed bottom-0 left-0 right-0 p-6">
+        <div className="max-w-md mx-auto">
+          <button
+            onClick={handleContinue}
+            style={getButtonStyles()}
+            className="h-[56px] rounded-full w-full max-w-[400px] mx-auto block transition-colors box-border font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] text-[18px] font-medium"
+            data-component-name="TransferPage"
+          >
+            {getButtonText()}
+          </button>
         </div>
       </div>
     </div>

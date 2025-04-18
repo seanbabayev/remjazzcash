@@ -8,35 +8,36 @@ import SignOutButton from '@/components/auth/SignOutButton';
 // Enkel Header-komponent
 const Header = () => {
   return (
-    <header className="flex justify-between items-center py-4 px-2">
-      <div className="w-10 h-10 flex items-center justify-center bg-white rounded-full">
+    <header className="flex items-start justify-between h-[50px]">
+      {/* Menyknapp vänsterjusterad */}
+      <div className="w-10 h-10 flex items-center justify-center bg-[#FEFEFE] rounded-[4px] border border-[#D9D9D9]">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 6H20" stroke="#7C1E1C" strokeWidth="2" strokeLinecap="round" />
-          <path d="M4 12H20" stroke="#7C1E1C" strokeWidth="2" strokeLinecap="round" />
-          <path d="M4 18H20" stroke="#7C1E1C" strokeWidth="2" strokeLinecap="round" />
+          <path d="M4 6H20" stroke="#A8A8A8" strokeWidth="2" strokeLinecap="round" />
+          <path d="M4 12H20" stroke="#A8A8A8" strokeWidth="2" strokeLinecap="round" />
+          <path d="M4 18H20" stroke="#A8A8A8" strokeWidth="2" strokeLinecap="round" />
         </svg>
       </div>
-      
-      <div className="flex items-center justify-center">
-        <Image 
-          src="/img/jazzcash.png" 
-          alt="JazzCash logo" 
-          width={120} 
-          height={40} 
-          className="h-8 w-auto"
-          priority
-        />
-      </div>
-      
-      <div className="w-10 h-10 flex items-center justify-center bg-white rounded-full relative">
-        <Image
-          src="/img/bell-icon.svg"
-          alt="Notifications"
-          width={16}
-          height={16}
-          className="brightness-100"
-        />
-        <div className="absolute top-0 right-0 w-3 h-3 bg-[#00BD5F] rounded-full border border-white"></div>
+      {/* Logotyp centrerad */}
+      <Image 
+        src="/img/zindigi.png" 
+        alt="Zindigi logo" 
+        width={130} 
+        height={60} 
+        className="mx-auto object-contain"
+        priority
+      />
+      {/* Bell högerjusterad */}
+      <div className="w-10 h-10 flex items-center justify-center bg-[#FEFEFE] rounded-[4px] border border-[#D9D9D9] relative">
+        <span className="relative inline-block w-4 h-4">
+          <Image
+            src="/img/bell-icon.svg"
+            alt="Notifications"
+            width={16}
+            height={16}
+            className="brightness-0 invert-[60%] sepia-[0%] saturate-0 hue-rotate-0 opacity-100"
+          />
+          <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#00BD5F] rounded-full border-2 border-white" />
+        </span>
       </div>
     </header>
   );
@@ -44,41 +45,17 @@ const Header = () => {
 
 export default function DashboardPage() {
   return (
-    <div className="relative w-full min-h-screen bg-[#FCF7F1] overflow-hidden">
-      {/* Background gradient */}
-      <div 
-        className="absolute left-0 top-0 w-full h-[210px]" 
-        style={{
-          background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
-        }}
-        data-component-name="DashboardPage"
-      >
-        {/* Center accent */}
-        <div 
-          style={{
-            position: 'absolute',
-            left: '50%',
-            marginLeft: '-126px',
-            top: '-130px',
-            width: '252px',
-            height: '252px',
-            background: 'rgba(247, 195, 17, 0.7)',
-            borderRadius: '100%',
-            filter: 'blur(30px)',
-          }}
-        />
-      </div>
-      
-      <div className="max-w-md mx-auto p-6 relative z-[1]">
-        {/* Header Section */}
-        <Header />
-
+    <div className="relative w-full min-h-screen bg-[#FEFEFE] overflow-hidden p-6">
+      {/* Radial background effekt inspirerad av Remittance-main */}
+      <div className="absolute w-[252px] h-[252px] top-[138px] left-[223px] bg-[radial-gradient(circle,rgba(124,204,201,0.8)_0%,rgba(124,204,201,0)_70%)] z-0 blur-[50px]" />
+      {/* Header Section */}
+      <Header className="px-6" />
+      <div className="max-w-md mx-auto relative z-[1]">
         {/* New Remittance Section */}
         <section className="mt-8 w-full">
           <h2 className="text-[24px] text-[#171717] mb-0">New remittance transfer</h2>
           <PhoneInput />
         </section>
-
         {/* Quick Remit Section */}
         <section className="mt-10">
           <div className="flex justify-between items-center mb-4">
@@ -86,7 +63,6 @@ export default function DashboardPage() {
           </div>
           <QuickRemit />
         </section>
-
         {/* Event Reminder Section */}
         <section className="mt-10">
           <h3 className="text-[24px] text-[#171717] mb-0">Event Reminder</h3>
@@ -104,7 +80,6 @@ export default function DashboardPage() {
             </div>
           </div>
         </section>
-
         {/* Sign Out Button */}
         <div className="mt-10 pb-6">
           <SignOutButton />

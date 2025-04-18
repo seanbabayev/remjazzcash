@@ -2,8 +2,9 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
-import { PaymentHeader } from '@/components/payment/PaymentHeader';
+import { TransferHeader } from '@/components/features/transfer/components/TransferHeader';
 import { Suspense } from 'react';
+import '@/styles/loader.css';
 
 const PaymentContent = () => {
   const router = useRouter();
@@ -43,35 +44,14 @@ const PaymentContent = () => {
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-[#FCF7F1] overflow-hidden">
-      {/* Background gradient */}
-      <div 
-        className="absolute left-0 top-0 w-full h-[210px]" 
-        style={{
-          background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
-        }}
-      >
-        {/* Center accent */}
-        <div 
-          style={{
-            position: 'absolute',
-            left: '50%',
-            marginLeft: '-126px',
-            top: '-130px',
-            width: '252px',
-            height: '252px',
-            background: 'rgba(247, 195, 17, 0.7)',
-            borderRadius: '100%',
-            filter: 'blur(30px)',
-          }}
-        />
-      </div>
-      
-      <div className="max-w-md mx-auto p-6 relative z-[1]">
-        <PaymentHeader title="Payment method" />
+    <div className="relative w-full min-h-screen bg-[#FEFEFE] overflow-hidden pt-6 px-6">
+      {/* Radial background effekt inspirerad av Remittance-main */}
+      <div className="absolute w-[252px] h-[252px] top-[138px] left-[223px] bg-[radial-gradient(circle,rgba(124,204,201,0.8)_0%,rgba(124,204,201,0)_70%)] z-0 blur-[50px]" />
+      <div className="max-w-md mx-auto pt-0 px-0 relative z-[1]">
+        <TransferHeader title="Payment method" />
 
         {/* Payment Options */}
-        <div className="mt-[48px] space-y-4">
+        <div className="mt-6 space-y-4">
           {paymentOptions.map((option) => (
             <button
               key={option.id}
@@ -106,34 +86,11 @@ const PaymentContent = () => {
 const PaymentOptionsPage = () => {
   return (
     <Suspense fallback={
-      <div className="relative w-full min-h-screen bg-[#FCF7F1] overflow-hidden">
-        {/* Background gradient */}
-        <div 
-          className="absolute left-0 top-0 w-full h-[210px]" 
-          style={{
-            background: 'linear-gradient(180deg, #7C1E1C 0%, #FCF7F1 100%)'
-          }}
-        >
-          {/* Center accent */}
-          <div 
-            style={{
-              position: 'absolute',
-              left: '50%',
-              marginLeft: '-126px',
-              top: '-130px',
-              width: '252px',
-              height: '252px',
-              background: 'rgba(247, 195, 17, 0.7)',
-              borderRadius: '100%',
-              filter: 'blur(30px)',
-            }}
-          />
-        </div>
-        
-        <div className="max-w-md mx-auto p-6 relative z-[1]">
-          <PaymentHeader title="Payment method" />
+      <div className="relative w-full min-h-screen bg-[#FEFEFE] overflow-hidden pt-6 px-6">
+        <div className="max-w-md mx-auto pt-0 px-0 relative z-[1]">
+          <TransferHeader title="Payment method" />
           <div className="mt-6 flex justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+            <div className="loader" />
           </div>
         </div>
       </div>
