@@ -47,7 +47,7 @@ export default function PhoneInput() {
       return {
         backgroundColor: '#00BD5F',
         cursor: 'wait',
-        color: '#FFFFFF',
+        color: '#1B1B1B',
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
       };
     }
